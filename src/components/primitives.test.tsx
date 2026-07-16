@@ -12,6 +12,7 @@ describe("primitives", () => {
   it("SectionMarker renders its label uppercase", () => {
     render(<SectionMarker label="The Driver" />);
     expect(screen.getByText("The Driver")).toBeInTheDocument();
+    expect(screen.getByText("The Driver")).toHaveClass("uppercase");
   });
   it("Sticker12 renders the race number", () => {
     render(<Sticker12 />);
