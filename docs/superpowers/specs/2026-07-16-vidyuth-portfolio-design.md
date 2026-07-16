@@ -57,6 +57,7 @@ Sticky bottom-right CTA chip in green: **"Partner with Vidyuth"** → scrolls to
 
 | # | Chapter | Content | Notes |
 |---|---|---|---|
+| 0 | **Splash screen** | Preloader on first visit: V12 monogram draw-in + progress, exits with a wipe into the hero (reference has one; client asked for it explicitly) | sessionStorage-gated so it plays once per session; skipped under reduced motion |
 | 1 | **Hero** | 15s muted loop cut from client's track footage, giant condensed headline **BORN TO RACE** over it, "Scroll to explore" prompt | video: h264/webm dual source, poster frame, `playsinline muted loop autoplay` |
 | 2 | **The Driver** | Section marker (• THE DRIVER, ruled line), large intro paragraph naming Vidyuth, age, base city, ambition; portrait photo + two short bio paragraphs | copy slots flagged `[NEEDS-CLIENT]` for age/city until confirmed |
 | 3 | **Stats cluster** | Layered, slightly-rotated cards: Races, Wins, Podiums, Current series/team (Momentum Motorsports per kart livery — confirm), #12 sticker card | all numbers `[NEEDS-CLIENT]`; layout ships with real slots, no fake numbers |
@@ -104,10 +105,22 @@ Store, news feed, multilingual, CMS. Single language (English), static content.
 - No fabricated stats or results anywhere: every `[NEEDS-CLIENT]` slot ships either
   filled with client-confirmed data or visibly designed as "coming soon", never faked.
 
+## Confirmed content (client-supplied 2026-07-16)
+
+- **Age**: 11
+- **Results**:
+  - Chennai Karting Festival — **P3** (4-stroke)
+  - Karter Cup Season 1 — **P2** (4-stroke)
+  - GTM Endurance — **P3** (4-stroke)
+  - IAME Series India Round 1 — **P4** (in category)
+  - IAME Series India Round 2 — **P6** (in category)
+- Stats cluster derives from these: **3 podiums**, **5 events**, best finish **P2**.
+  IAME results presented as "in category" exactly as stated; nothing inflated.
+
 ## Open content items (client to supply)
 
-1. Age, base city, current series and team name
-2. Race/championship results, year by year
-3. A personal quote (for chapters 4 and 6)
-4. Contact email/phone for sponsorship + social links
-5. Any existing sponsor logos
+1. Base city, current series and team name (kart livery reads Momentum Motorsports — confirm)
+2. A personal quote (for chapters 4 and 6)
+3. Contact email/phone for sponsorship + social links
+4. Any existing sponsor logos
+5. Year for each result (assumed recent; timeline cards need years)
