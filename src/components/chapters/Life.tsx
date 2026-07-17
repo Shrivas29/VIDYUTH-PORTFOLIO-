@@ -41,7 +41,7 @@ export function Life() {
                   className="flex min-h-11 w-full cursor-pointer items-center gap-4 py-6 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green"
                 >
                   <span className="size-2 shrink-0 rounded-full bg-green" aria-hidden />
-                  <span className="font-display text-[clamp(1.8rem,5vw,3rem)]">{card.title}</span>
+                  <span className="font-block text-[clamp(1.8rem,5vw,3rem)]">{card.title}</span>
                   <motion.span
                     className="ml-auto font-body text-2xl font-medium text-white-soft/60"
                     animate={{ rotate: open ? 45 : 0 }}

@@ -18,8 +18,8 @@ function ResultCard({ result, index, reduced }: { result: RaceResult; index: num
       viewport={{ once: true, margin: "-8%" }}
       transition={{ delay: index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
     >
-      <h3 className="border-b border-ink/60 pb-2 font-display text-2xl">{result.event}</h3>
-      <p className="font-display mt-auto text-[clamp(4rem,10vw,6rem)]">P{result.finish}</p>
+      <h3 className="border-b border-ink/60 pb-2 font-block text-2xl">{result.event}</h3>
+      <p className="font-block mt-auto text-[clamp(4rem,10vw,6rem)]">P{result.finish}</p>
       <div className="mt-3 flex items-center gap-2">
         <span className="text-[11px] font-bold uppercase tracking-[0.04em]">{result.category}</span>
         {result.finish <= 3 && (

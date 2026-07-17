@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { display, body } from "@/lib/fonts";
+import { display, block, body } from "@/lib/fonts";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Splash } from "@/components/Splash";
 import { Header } from "@/components/Header";
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${block.variable} ${body.variable}`}>
       <body>
         <SmoothScroll>
           <Splash />

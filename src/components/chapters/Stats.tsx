@@ -40,7 +40,7 @@ export function Stats() {
               <p className="border-b border-ink/60 pb-2 text-[11px] font-bold uppercase tracking-[0.04em]">
                 {c.label}
               </p>
-              <p className="font-display mt-3 text-[clamp(3rem,8vw,6rem)]">{c.value}</p>
+              <p className="font-block mt-3 text-[clamp(3rem,8vw,6rem)]">{c.value}</p>
             </motion.div>
           ))}
           <motion.div

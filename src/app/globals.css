@@ -23,8 +23,16 @@ body {
   font-weight: 500;
 }
 
+/* Pencerio is a hand-drawn script: no all-caps (script caps don't join),
+   and extra line-height so hairline ascenders/descenders never clip. */
 .font-display {
-  font-family: var(--font-display), sans-serif;
+  font-family: var(--font-display), cursive;
+  line-height: 1.05;
+}
+
+/* Tanker: the block voice for numerals, marks, and data labels. */
+.font-block {
+  font-family: var(--font-block), sans-serif;
   text-transform: uppercase;
   line-height: 0.88;
 }

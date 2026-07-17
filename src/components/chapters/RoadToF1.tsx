@@ -33,11 +33,11 @@ export function RoadToF1() {
               viewport={{ once: true, margin: "-15%" }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="font-display text-xl text-white-soft/50" aria-hidden>
+              <span className="font-block text-xl text-white-soft/50" aria-hidden>
                 0{i + 1}
               </span>
               <div className="flex flex-wrap items-center gap-4">
-                <h3 className={`font-display text-[clamp(1.8rem,4vw,2.5rem)] ${stage.current ? "text-green" : ""}`}>
+                <h3 className={`font-block text-[clamp(1.8rem,4vw,2.5rem)] ${stage.current ? "text-green" : ""}`}>
                   {stage.stage}
                 </h3>
                 {stage.current && (

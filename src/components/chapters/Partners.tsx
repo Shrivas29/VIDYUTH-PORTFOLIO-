@@ -29,7 +29,7 @@ export function Partners() {
               viewport={{ once: true, margin: "-10%" }}
               transition={{ delay: i * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="font-display text-xl text-ink/70">Your logo here</span>
+              <span className="font-block text-xl text-ink/70">Your logo here</span>
               <span className="text-[11px] font-bold uppercase tracking-[0.04em] text-ink/70">{slot}</span>
             </motion.div>
           ))}
