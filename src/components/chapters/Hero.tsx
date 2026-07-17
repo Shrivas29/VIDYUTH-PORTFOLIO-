@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { driver } from "@/data/site";
 import { splashWasShownThisLoad } from "@/components/Splash";
 
@@ -96,6 +96,20 @@ export function Hero() {
     setEntrance({ delayBase: headlineDelayBase(splashWasShownThisLoad()) });
   }, [reduced]);
 
+  // Scroll-out parallax: as the hero leaves the viewport the video zooms
+  // slowly while the headline lifts away faster and the prompt fades —
+  // cheap depth that makes the handoff into the first chapter cinematic.
+  // All three motion values sit at their rest state at scroll 0, so SSR
+  // and hydration markup agree; under reduced motion they're not attached.
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const videoScale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
+  const headlineY = useTransform(scrollYProgress, [0, 1], [0, -70]);
+  const promptOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
+
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const video = videoRef.current;
@@ -112,21 +126,29 @@ export function Hero() {
   }, [reduced]);
 
   return (
-    <section id="hero" className="relative h-svh overflow-hidden bg-ink">
-      <video
-        ref={videoRef}
-        className="absolute inset-0 size-full object-cover opacity-80"
-        poster="/media/hero-poster.jpg"
-        muted
-        loop
-        playsInline
+    <section id="hero" ref={sectionRef} className="relative h-svh overflow-hidden bg-ink">
+      <motion.div
+        className="absolute inset-0"
+        style={reduced ? undefined : { scale: videoScale }}
         aria-hidden
       >
-        <source src="/media/hero.webm" type="video/webm" />
-        <source src="/media/hero.mp4" type="video/mp4" />
-      </video>
+        <video
+          ref={videoRef}
+          className="size-full object-cover opacity-80"
+          poster="/media/hero-poster.jpg"
+          muted
+          loop
+          playsInline
+        >
+          <source src="/media/hero.webm" type="video/webm" />
+          <source src="/media/hero.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
       <div className="absolute inset-0 bg-ink/35" aria-hidden />
-      <div className="relative flex h-full flex-col items-center justify-center px-4">
+      <motion.div
+        className="relative flex h-full flex-col items-center justify-center px-4"
+        style={reduced ? undefined : { y: headlineY }}
+      >
         <h1
           className="font-display text-center text-white-soft"
           style={{ fontSize: "clamp(4rem, 17vw, 15rem)" }}
@@ -153,10 +175,13 @@ export function Hero() {
             )
           )}
         </h1>
-      </div>
-      <p className="absolute inset-x-0 bottom-8 pl-5 text-left text-xs font-bold uppercase tracking-[0.04em] text-white-soft md:pl-0 md:text-center">
+      </motion.div>
+      <motion.p
+        className="absolute inset-x-0 bottom-8 pl-5 text-left text-xs font-bold uppercase tracking-[0.04em] text-white-soft md:pl-0 md:text-center"
+        style={reduced ? undefined : { opacity: promptOpacity }}
+      >
         Scroll to explore
-      </p>
+      </motion.p>
     </section>
   );
 }

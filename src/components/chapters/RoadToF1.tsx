@@ -2,6 +2,7 @@
 import { motion } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
+import { RevealHeading } from "@/components/RevealHeading";
 import { roadToF1 } from "@/data/site";
 
 export function RoadToF1() {
@@ -10,7 +11,9 @@ export function RoadToF1() {
     <section id="road-to-f1" className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20">
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Road to F1" inverted as="p" />
-        <h2 className="font-display mt-10 text-[clamp(3rem,9vw,7.5rem)]">Road to F1</h2>
+        <RevealHeading wrapClassName="mt-10" className="font-display text-[clamp(3rem,9vw,7.5rem)]">
+          Road to F1
+        </RevealHeading>
         <ol className="mt-16 flex flex-col">
           {roadToF1.map((stage, i) => (
             <motion.li

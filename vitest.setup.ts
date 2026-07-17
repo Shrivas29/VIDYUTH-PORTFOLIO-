@@ -9,6 +9,19 @@ vi.mock("next/font/local", () => ({
   default: () => ({ variable: "--font-display" }),
 }));
 
+// jsdom ships neither observer; framer-motion needs them for
+// whileInView (IntersectionObserver) and useScroll (ResizeObserver).
+class ObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+  takeRecords() {
+    return [];
+  }
+}
+Object.defineProperty(window, "IntersectionObserver", { writable: true, value: ObserverStub });
+Object.defineProperty(window, "ResizeObserver", { writable: true, value: ObserverStub });
+
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: (q: string) => ({

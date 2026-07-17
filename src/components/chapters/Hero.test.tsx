@@ -11,27 +11,33 @@ import { driver } from "@/data/site";
 // The wiring tests further down need to inspect the delay actually handed
 // to the entrance animation without driving framer-motion's real WAAPI
 // timeline through jsdom, so `motion.span` is swapped for a plain `<span>`
-// that surfaces `transition.delay` as a `data-delay` attribute. Hero only
-// ever reads `motion.span`, so nothing else needs to survive the mock.
+// that surfaces `transition.delay` as a `data-delay` attribute. The rest
+// of the `motion` namespace (div/p for the parallax wrappers) stays real.
 vi.mock("motion/react", async (importOriginal) => {
   const actual = await importOriginal<typeof import("motion/react")>();
+  const SpanMock = ({
+    children,
+    className,
+    transition,
+  }: {
+    children?: React.ReactNode;
+    className?: string;
+    transition?: { delay?: number };
+  }) => (
+    <span className={className} data-testid="word" data-delay={transition?.delay}>
+      {children}
+    </span>
+  );
+  // `motion` is a Proxy that materializes components on demand, so spreading
+  // it loses everything — delegate instead, overriding only `span`.
   return {
     ...actual,
-    motion: {
-      span: ({
-        children,
-        className,
-        transition,
-      }: {
-        children?: React.ReactNode;
-        className?: string;
-        transition?: { delay?: number };
-      }) => (
-        <span className={className} data-testid="word" data-delay={transition?.delay}>
-          {children}
-        </span>
-      ),
-    },
+    motion: new Proxy(actual.motion, {
+      get(target, prop) {
+        if (prop === "span") return SpanMock;
+        return Reflect.get(target, prop);
+      },
+    }),
   };
 });
 

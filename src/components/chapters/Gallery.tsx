@@ -3,6 +3,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
+import { SeamAccent } from "@/components/SeamAccent";
 import { TrackArrows } from "@/components/TrackArrows";
 import { useDragTrack } from "@/lib/useDragTrack";
 import { gallery, type GalleryPhoto } from "@/data/site";
@@ -28,7 +29,7 @@ export function Gallery() {
   const { viewportRef, trackRef, x, prev, next } = useDragTrack(CARD_STEP);
 
   return (
-    <section id="gallery" className="bg-graph px-5 py-24 md:px-12 lg:px-20">
+    <section id="gallery" className="relative bg-graph px-5 py-24 md:px-12 lg:px-20">
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Gallery" />
         {reduced ? (
@@ -59,6 +60,7 @@ export function Gallery() {
           </>
         )}
       </div>
+      <SeamAccent />
     </section>
   );
 }

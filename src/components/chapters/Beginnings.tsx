@@ -2,6 +2,7 @@
 import { motion } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
+import { SeamAccent } from "@/components/SeamAccent";
 import { TrackArrows } from "@/components/TrackArrows";
 import { useDragTrack } from "@/lib/useDragTrack";
 import { beginningsQuote, results, type RaceResult } from "@/data/site";
@@ -30,7 +31,7 @@ export function Beginnings() {
   const { viewportRef, trackRef, x, prev, next } = useDragTrack(CARD_STEP);
 
   return (
-    <section id="beginnings" className="bg-graph px-5 pb-28 md:px-12 lg:px-20">
+    <section id="beginnings" className="relative bg-graph px-5 pb-28 md:px-12 lg:px-20">
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Beginnings" />
         <blockquote className="mt-10 max-w-[26ch] font-body text-[clamp(1.6rem,3vw,2.4rem)] font-semibold leading-snug">
@@ -64,6 +65,7 @@ export function Beginnings() {
           </>
         )}
       </div>
+      <SeamAccent />
     </section>
   );
 }
