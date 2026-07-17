@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ParallaxFrame } from "@/components/ParallaxFrame";
 import { SectionMarker } from "@/components/SectionMarker";
 import { driver } from "@/data/site";
 
@@ -11,14 +12,16 @@ export function Driver() {
           {driver.intro}
         </p>
         <div className="mt-16 grid gap-10 md:grid-cols-[320px_1fr] md:gap-16">
-          <Image
-            src="/media/portrait.webp"
-            alt={`${driver.name} in his race suit and green helmet`}
-            width={590}
-            height={782}
-            className="w-full max-w-xs"
-            sizes="(min-width: 768px) 320px, 90vw"
-          />
+          <ParallaxFrame className="aspect-[590/782] w-full max-w-xs">
+            <Image
+              src="/media/portrait.webp"
+              alt={`${driver.name} in his race suit and green helmet`}
+              width={590}
+              height={782}
+              className="size-full object-cover"
+              sizes="(min-width: 768px) 320px, 90vw"
+            />
+          </ParallaxFrame>
           <div className="flex max-w-[65ch] flex-col gap-5 self-center text-[15px] leading-relaxed">
             {driver.bio.map((p) => (
               <p key={p.slice(0, 16)}>{p}</p>
