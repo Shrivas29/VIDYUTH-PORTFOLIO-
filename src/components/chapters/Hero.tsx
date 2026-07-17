@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { driver } from "@/data/site";
 import { splashWasShownThisLoad } from "@/components/Splash";
@@ -7,6 +7,14 @@ import { splashWasShownThisLoad } from "@/components/Splash";
 const SHORT_DELAY = 0.3;
 const POST_SPLASH_DELAY = 2.5;
 const STAGGER = 0.12;
+
+// Isomorphic layout effect: `useLayoutEffect` warns when it runs during SSR
+// (it never actually does here — this component is only ever rendered via
+// `renderToString`, which doesn't run effects at all — but Next can still
+// evaluate this module in a server context where the warning check fires).
+// Falling back to `useEffect` there is a no-op safeguard, not a real code
+// path.
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
  * Base headline entrance delay, in seconds, before the per-word `i * STAGGER`
@@ -52,20 +60,38 @@ export function Hero() {
   // correct delay is computed sidesteps that entirely — there is no
   // earlier, wrong animation to reschedule.
   //
-  // This must be a plain `useEffect`, not `useLayoutEffect`: React fires
-  // *every* layout effect in the tree before *any* passive effect, so a
-  // layout effect here would run before Splash's own (passive) mount effect
-  // has had a chance to flip `shownThisLoad` — reading it too early and
-  // always seeing the pre-splash default. Splash.tsx's ordering guarantee
-  // ("its effect always commits first") only holds between two effects of
-  // the same kind; verified by testing that a layout effect here silently
-  // regresses to the short delay on every load, splash or not. A passive
-  // effect keeps Hero's read after Splash's write, at the cost of accepting
-  // a one-frame flash between the static text and the motion span's
-  // pre-animation state — an explicitly acceptable tradeoff here.
+  // This runs in a layout effect (before the browser's next paint), not a
+  // passive `useEffect`: a passive effect is scheduled *after* paint, which
+  // left a real, user-visible gap on repeat visits (splash skipped, nothing
+  // covering the hero) — the static spans painted visible, then ~100ms+
+  // later snapped to the motion span's invisible pre-animation state, a
+  // visible → hidden → visible flicker. A layout effect closes almost all of
+  // that gap: it fires synchronously as part of the same commit hydration
+  // produced, before the browser's *next* paint, so there is no longer a
+  // "hydrated, idle, still showing the static version" interval. One frame
+  // of the raw SSR HTML (~10-16ms, confirmed via a production build) is
+  // still visible before that first client paint — that part is the browser
+  // painting streamed HTML before the JS bundle has even loaded, which is
+  // exactly what SSR-visible content (Finding 1) requires and no client-side
+  // effect, layout or passive, can execute before. Eliminating that last
+  // frame too would mean either the SSR markup itself starts invisible
+  // (reintroducing Finding 1) or a render-blocking inline script outside
+  // React's hydration model entirely — a materially bigger change than this
+  // fix.
+  //
+  // This only works because Splash's own flag-setting effect (Splash.tsx)
+  // is *also* a layout effect. React fires every layout effect in the tree
+  // before any passive effect, so if Hero's read here were a layout effect
+  // while Splash's write stayed a passive `useEffect`, Hero would always
+  // read the pre-splash default (verified by testing: the fresh-load delay
+  // silently regressed to the short 0.3s on every load, splash or not).
+  // Promoting Splash's effect to a layout effect too keeps both reads/writes
+  // in the same commit phase, where the sibling-order guarantee (Splash
+  // renders before `{children}` in the root layout, so its effect commits
+  // first) actually holds.
   const [entrance, setEntrance] = useState<{ delayBase: number } | null>(null);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (reduced) return; // stays static/visible forever — content, never gated on animation
     setEntrance({ delayBase: headlineDelayBase(splashWasShownThisLoad()) });
   }, [reduced]);

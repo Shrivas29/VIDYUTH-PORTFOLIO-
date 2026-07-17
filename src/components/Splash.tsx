@@ -1,15 +1,31 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Monogram } from "./Monogram";
 
 const SESSION_KEY = "v12-splash";
 
+// Isomorphic layout effect: falls back to `useEffect` if this module is ever
+// evaluated where `window` doesn't exist (SSR never actually runs this
+// component's effects at all, so this is a safeguard against the dev-mode
+// warning, not a real code path).
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /**
  * Whether the current page load showed the splash. Set synchronously inside
  * `Splash`'s mount effect, so it is only meaningful after that effect has run
- * (i.e. after the component using it renders on the client). Task 8's hero
- * reads this to decide how to time its headline entrance.
+ * (i.e. after the component using it renders on the client). Hero reads this
+ * to decide how to time its headline entrance.
+ *
+ * This is a *layout* effect, not a plain `useEffect`, specifically so that
+ * ordering guarantee holds: React fires every layout effect in the tree
+ * before any passive effect, so a consumer reading this flag from its own
+ * layout effect (Hero does) needs Splash's write to also be a layout
+ * effect — otherwise the read always sees the pre-decision default,
+ * regardless of component order. (Passive effects follow the same
+ * sibling-order rule among themselves, and so do layout effects among
+ * themselves, but the two phases don't interleave: *all* layout effects
+ * commit before *any* passive effect does.)
  */
 let shownThisLoad = false;
 
@@ -44,7 +60,7 @@ export function Splash() {
   const decided = useRef(false);
   const willShow = useRef(false);
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     if (!decided.current) {
       decided.current = true;
       const seen = sessionStorage.getItem(SESSION_KEY);
