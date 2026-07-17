@@ -154,7 +154,7 @@ export function Hero() {
           )}
         </h1>
       </div>
-      <p className="absolute inset-x-0 bottom-8 text-center text-xs font-bold uppercase tracking-[0.04em] text-white-soft">
+      <p className="absolute inset-x-0 bottom-8 pl-5 text-left text-xs font-bold uppercase tracking-[0.04em] text-white-soft md:pl-0 md:text-center">
         Scroll to explore
       </p>
     </section>

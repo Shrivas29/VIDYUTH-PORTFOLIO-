@@ -1,8 +1,10 @@
-import { Anton_SC, Manrope } from "next/font/google";
+import localFont from "next/font/local";
+import { Manrope } from "next/font/google";
 
-export const display = Anton_SC({
+// Tanker (Fontshare / Indian Type Foundry) — the display voice of the site.
+export const display = localFont({
+  src: "../fonts/Tanker-Regular.woff2",
   weight: "400",
-  subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
 });
