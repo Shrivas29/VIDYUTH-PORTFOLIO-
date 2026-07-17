@@ -15,8 +15,8 @@ export function RoadToF1() {
             <motion.li
               key={stage.stage}
               className="grid gap-3 border-t border-white-soft/20 py-8 md:grid-cols-[80px_1fr_1fr] md:gap-8"
-              initial={reduced ? false : { opacity: 0, x: -32 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={false}
+              whileInView={reduced ? undefined : { opacity: [0, 1], x: [-32, 0] }}
               viewport={{ once: true, margin: "-15%" }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >

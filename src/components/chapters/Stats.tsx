@@ -5,7 +5,11 @@ import { SectionMarker } from "@/components/SectionMarker";
 import { derivedStats, results } from "@/data/site";
 
 const cardBase = "bg-white-soft/90 p-6 shadow-[0_2px_24px_rgba(0,0,22,0.08)]";
+// initial={false} keeps SSR markup fully visible (content never gated on
+// animation); the keyframe arrays still animate 0 -> 1 when the card
+// scrolls into view.
 const cardReveal = {
+  initial: false as const,
   viewport: { once: true, margin: "-15%" },
   transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
 };
@@ -27,8 +31,8 @@ export function Stats() {
             <motion.div
               key={c.label}
               className={`${cardBase} md:-mr-4 md:w-64`}
-              initial={reduced ? false : { opacity: 0, y: 24, rotate: 0 }}
-              whileInView={{ opacity: 1, y: 0, rotate: c.rot }}
+              style={reduced ? { rotate: c.rot } : undefined}
+              whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0], rotate: [0, c.rot] }}
               {...cardReveal}
               transition={{ ...cardReveal.transition, delay: i * 0.08 }}
             >
@@ -40,8 +44,8 @@ export function Stats() {
           ))}
           <motion.div
             className={`${cardBase} md:-mr-4`}
-            initial={reduced ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0, rotate: 2 }}
+            style={reduced ? { rotate: 2 } : undefined}
+            whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0], rotate: [0, 2] }}
             {...cardReveal}
             transition={{ ...cardReveal.transition, delay: 0.24 }}
           >
@@ -52,8 +56,8 @@ export function Stats() {
           </motion.div>
           <motion.div
             className={cardBase}
-            initial={reduced ? false : { opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0, rotate: -1.5 }}
+            style={reduced ? { rotate: -1.5 } : undefined}
+            whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0], rotate: [0, -1.5] }}
             {...cardReveal}
             transition={{ ...cardReveal.transition, delay: 0.32 }}
           >
