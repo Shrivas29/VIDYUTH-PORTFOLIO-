@@ -128,7 +128,6 @@ export function GooeyText({
           ref={text1Ref}
           className={cn(
             "absolute left-1/2 top-1/2 inline-block -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-center",
-            "text-white-soft",
             textClassName
           )}
         />
@@ -136,7 +135,6 @@ export function GooeyText({
           ref={text2Ref}
           className={cn(
             "absolute left-1/2 top-1/2 inline-block -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap text-center",
-            "text-white-soft",
             textClassName
           )}
         />

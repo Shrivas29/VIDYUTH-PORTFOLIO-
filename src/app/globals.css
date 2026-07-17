@@ -25,7 +25,7 @@
 #boot-cover {
   position: fixed;
   inset: 0;
-  background: var(--color-ink);
+  background: var(--color-paper);
   z-index: var(--z-boot);
   animation: boot-cover-failsafe 0.4s ease-out 2.8s forwards;
 }

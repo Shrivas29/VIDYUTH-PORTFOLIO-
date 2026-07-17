@@ -96,7 +96,7 @@ export function Splash() {
         <motion.div
           data-testid="splash"
           aria-hidden="true"
-          className="fixed inset-0 grid place-items-center bg-ink"
+          className="fixed inset-0 grid place-items-center bg-paper"
           style={{ zIndex: "var(--z-splash)" }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -115,7 +115,7 @@ export function Splash() {
               morphTime={0.95}
               cooldownTime={0.3}
               className="h-[clamp(4rem,16vw,9rem)] w-[min(92vw,44rem)]"
-              textClassName="font-block text-[clamp(3rem,12vw,7rem)]"
+              textClassName="font-block text-ink text-[clamp(3rem,12vw,7rem)]"
             />
             <motion.span
               className="block h-0.5 w-40 origin-left bg-green"
