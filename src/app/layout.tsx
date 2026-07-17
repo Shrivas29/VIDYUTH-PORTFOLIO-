@@ -1,6 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { display, body } from "@/lib/fonts";
+import { SmoothScroll } from "@/components/SmoothScroll";
+import { Splash } from "@/components/Splash";
+import { Header } from "@/components/Header";
+import { PartnerChip } from "@/components/PartnerChip";
 
 export const metadata: Metadata = {
   title: "Vidyuth #12 — Karting Driver",
@@ -11,7 +15,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>
+          <Splash />
+          <Header />
+          {children}
+          <PartnerChip />
+        </SmoothScroll>
+      </body>
     </html>
   );
 }
