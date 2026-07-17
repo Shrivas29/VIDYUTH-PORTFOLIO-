@@ -4,6 +4,7 @@ import { Stats } from "@/components/chapters/Stats";
 import { Beginnings } from "@/components/chapters/Beginnings";
 import { RoadToF1 } from "@/components/chapters/RoadToF1";
 import { QuoteScrub } from "@/components/chapters/QuoteScrub";
+import { Gallery } from "@/components/chapters/Gallery";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Beginnings />
       <RoadToF1 />
       <QuoteScrub />
+      <Gallery />
     </main>
   );
 }

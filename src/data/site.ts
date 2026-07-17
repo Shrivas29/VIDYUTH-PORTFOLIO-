@@ -51,6 +51,22 @@ export const beginningsQuote = "I want to be on that grid.";
 
 export const quote = "Too young to drive a car. Fast enough to race one.";
 
+export type GalleryPhoto = { src: string; width: number; height: number; alt: string };
+
+export const gallery: GalleryPhoto[] = [
+  { src: "/media/photo-02.webp", width: 1280, height: 854, alt: "Vidyuth leads a pack of karts through a corner in kart number 12" },
+  { src: "/media/photo-08.webp", width: 1066, height: 1600, alt: "Panning shot of Vidyuth cornering at full speed" },
+  { src: "/media/photo-04.webp", width: 1280, height: 854, alt: "Vidyuth takes the checkered flag in kart number 12" },
+  { src: "/media/photo-12.webp", width: 1066, height: 1600, alt: "Vidyuth flat out on the straight, the kerbs a blur" },
+  { src: "/media/photo-05.webp", width: 1179, height: 648, alt: "Vidyuth carries speed through a corner, green helmet down" },
+  { src: "/media/photo-09.webp", width: 1066, height: 1600, alt: "Vidyuth turns in past the tyre wall" },
+  { src: "/media/photo-06.webp", width: 640, height: 640, alt: "A handshake with a rival driver in the paddock at sunset" },
+  { src: "/media/photo-10.webp", width: 1280, height: 854, alt: "Vidyuth with the Momentum Motorsports team" },
+  { src: "/media/photo-11.webp", width: 924, height: 1600, alt: "Talking gloves and setup with a fellow driver before a session" },
+  { src: "/media/photo-03.webp", width: 1280, height: 854, alt: "Vidyuth in Momentum Motorsports colours in the paddock" },
+  { src: "/media/photo-13.webp", width: 1066, height: 1600, alt: "Suited up at the fence, helmet on, waiting for track time" },
+];
+
 export const chapters = [
   { id: "hero", label: "Start" },
   { id: "driver", label: "The Driver" },
