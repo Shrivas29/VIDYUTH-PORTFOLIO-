@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Monogram } from "./Monogram";
 
@@ -24,17 +24,42 @@ export function Splash() {
   // only place that flips it, after hydration has already settled.
   const [show, setShow] = useState(false);
   const reduced = useReducedMotion();
+  // Guards against React StrictMode's dev-mode double-invocation of mount
+  // effects: without a guard, the first invocation would write the session
+  // flag and the second would immediately see it and hide the splash, so it
+  // would never actually show in `next dev` (and the flag would be burned
+  // for the rest of the session). `decided` makes the "have we shown the
+  // splash yet" call exactly once. `useReducedMotion()` lazily reads
+  // `matchMedia` on first render and freezes that value in state (it never
+  // updates after mount), so the `reduced` this closure captures is already
+  // the correct first-mount value — no need to bypass the hook.
+  //
+  // The one-time decision alone isn't quite enough: StrictMode's simulated
+  // mount->cleanup->remount cycle would clear the hide-timer set up on the
+  // simulated first mount, and a naive "run the whole body once" guard would
+  // then skip re-arming it on the real mount, leaving the splash stuck open
+  // forever in dev. So the hide-timer is armed on every *actual* effect
+  // invocation (each with its own cleanup), while `decided`/`willShow` only
+  // gate the sessionStorage read/write and the one-time flags.
+  const decided = useRef(false);
+  const willShow = useRef(false);
 
   useEffect(() => {
-    const seen = sessionStorage.getItem(SESSION_KEY);
-    if (seen || reduced) {
-      shownThisLoad = false;
-      setShow(false);
-      return;
+    if (!decided.current) {
+      decided.current = true;
+      const seen = sessionStorage.getItem(SESSION_KEY);
+      if (seen || reduced) {
+        shownThisLoad = false;
+        willShow.current = false;
+        setShow(false);
+      } else {
+        shownThisLoad = true;
+        willShow.current = true;
+        setShow(true);
+        sessionStorage.setItem(SESSION_KEY, "1");
+      }
     }
-    shownThisLoad = true;
-    setShow(true);
-    sessionStorage.setItem(SESSION_KEY, "1");
+    if (!willShow.current) return;
     const t = setTimeout(() => setShow(false), 2400);
     return () => clearTimeout(t);
   }, [reduced]);
@@ -44,6 +69,7 @@ export function Splash() {
       {show && (
         <motion.div
           data-testid="splash"
+          aria-hidden="true"
           className="fixed inset-0 grid place-items-center bg-ink"
           style={{ zIndex: "var(--z-splash)" }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
