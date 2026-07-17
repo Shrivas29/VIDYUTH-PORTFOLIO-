@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
-import { SeamCurtain } from "@/components/SeamCurtain";
 import { SectionMarker } from "@/components/SectionMarker";
 import { RevealHeading } from "@/components/RevealHeading";
 
@@ -11,7 +10,6 @@ export function Partners() {
   const reduced = useHydratedReducedMotion();
   return (
     <section id="partners" className="relative bg-graph px-5 py-24 md:px-12 lg:px-20">
-      <SeamCurtain />
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Partners" as="p" />
         <RevealHeading wrapClassName="mt-10" className="font-display text-[clamp(2.5rem,7vw,5.5rem)]">

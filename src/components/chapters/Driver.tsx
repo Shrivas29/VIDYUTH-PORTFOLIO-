@@ -1,14 +1,12 @@
 import Image from "next/image";
 import { DiagonalItem } from "@/components/DiagonalItem";
 import { ParallaxFrame } from "@/components/ParallaxFrame";
-import { SeamCurtain } from "@/components/SeamCurtain";
 import { SectionMarker } from "@/components/SectionMarker";
 import { driver } from "@/data/site";
 
 export function Driver() {
   return (
     <section id="driver" className="relative bg-graph px-5 py-24 md:px-12 lg:px-20">
-      <SeamCurtain />
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="The Driver" />
         <DiagonalItem>

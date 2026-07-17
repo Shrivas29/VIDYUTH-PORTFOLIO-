@@ -1,5 +1,4 @@
 import { Monogram } from "@/components/Monogram";
-import { SeamCurtain } from "@/components/SeamCurtain";
 import { chapters, socials } from "@/data/site";
 
 const footerLink =
@@ -8,7 +7,6 @@ const footerLink =
 export function Footer() {
   return (
     <footer id="contact" className="relative bg-ink px-5 py-16 text-white-soft md:px-12 lg:px-20">
-      <SeamCurtain finish="bottom" />
       <div className="mx-auto max-w-6xl">
         <Monogram inverted />
         <div className="mt-12 grid gap-12 md:grid-cols-[1fr_auto]">

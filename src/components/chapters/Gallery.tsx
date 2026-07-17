@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { motion, useMotionValue, wrap } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
-import { SeamCurtain } from "@/components/SeamCurtain";
 import { SectionMarker } from "@/components/SectionMarker";
 import { SeamAccent } from "@/components/SeamAccent";
 import { gallery, type GalleryPhoto } from "@/data/site";
@@ -81,7 +80,6 @@ export function Gallery() {
 
   return (
     <section id="gallery" className="relative bg-graph">
-      <SeamCurtain />
       <div className="pointer-events-none absolute left-5 top-14 z-10 md:left-12 lg:left-20">
         <SectionMarker label="Gallery" />
       </div>
