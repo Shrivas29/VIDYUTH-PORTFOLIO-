@@ -1,5 +1,6 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { Sticker12 } from "@/components/Sticker12";
 import { SectionMarker } from "@/components/SectionMarker";
 import { derivedStats, results } from "@/data/site";
@@ -16,7 +17,7 @@ const cardReveal = {
 
 export function Stats() {
   const s = derivedStats(results);
-  const reduced = useReducedMotion();
+  const reduced = useHydratedReducedMotion();
   const cards = [
     { label: "Podiums", value: String(s.podiums), rot: -2 },
     { label: "Events raced", value: String(s.events), rot: 1.5 },

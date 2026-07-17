@@ -1,10 +1,11 @@
 "use client";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
 import { roadToF1 } from "@/data/site";
 
 export function RoadToF1() {
-  const reduced = useReducedMotion();
+  const reduced = useHydratedReducedMotion();
   return (
     <section id="road-to-f1" className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20">
       <div className="mx-auto max-w-6xl">

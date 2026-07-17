@@ -1,14 +1,15 @@
 "use client";
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { quote } from "@/data/site";
 
 export function QuoteScrub() {
   const outer = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: outer, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], ["6%", "-106%"]);
-  const reduced = useReducedMotion();
+  const reduced = useHydratedReducedMotion();
 
   if (reduced) {
     return (

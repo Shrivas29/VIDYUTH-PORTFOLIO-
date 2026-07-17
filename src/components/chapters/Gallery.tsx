@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
 import { TrackArrows } from "@/components/TrackArrows";
 import { useDragTrack } from "@/lib/useDragTrack";
@@ -23,7 +24,7 @@ function Photo({ photo }: { photo: GalleryPhoto }) {
 }
 
 export function Gallery() {
-  const reduced = useReducedMotion();
+  const reduced = useHydratedReducedMotion();
   const { viewportRef, trackRef, x, prev, next } = useDragTrack(CARD_STEP);
 
   return (
