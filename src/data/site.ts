@@ -49,8 +49,6 @@ export const lifeCards = [
 
 export const beginningsQuote = "I want to be on that grid.";
 
-export const quote = "Too young to drive a car. Fast enough to race one.";
-
 // Ships empty until the client supplies links; Footer renders only what's here.
 export const socials: { label: string; href: string }[] = [];
 
@@ -76,7 +74,6 @@ export const chapters = [
   { id: "stats", label: "Stats" },
   { id: "beginnings", label: "Beginnings" },
   { id: "road-to-f1", label: "Road to F1" },
-  { id: "quote", label: "Mindset" },
   { id: "gallery", label: "Gallery" },
   { id: "life", label: "Life as a Driver" },
   { id: "partners", label: "Partners" },

@@ -5,6 +5,11 @@ import { Monogram } from "./Monogram";
 
 const SESSION_KEY = "v12-splash";
 
+// How long the splash holds before it wipes away. Kept short so the hero
+// reads as "loaded" fast; Hero's POST_SPLASH_DELAY is tuned to this so the
+// headline enters just as the wipe clears it.
+const DISPLAY_MS = 1300;
+
 // Isomorphic layout effect: falls back to `useEffect` if this module is ever
 // evaluated where `window` doesn't exist (SSR never actually runs this
 // component's effects at all, so this is a safeguard against the dev-mode
@@ -76,7 +81,7 @@ export function Splash() {
       }
     }
     if (!willShow.current) return;
-    const t = setTimeout(() => setShow(false), 2400);
+    const t = setTimeout(() => setShow(false), DISPLAY_MS);
     return () => clearTimeout(t);
   }, [reduced]);
 
@@ -103,7 +108,7 @@ export function Splash() {
               className="block h-0.5 w-40 origin-left bg-green"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 1.6, ease: "easeOut" }}
+              transition={{ duration: 0.9, ease: "easeOut" }}
               aria-hidden
             />
           </motion.div>

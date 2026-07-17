@@ -11,7 +11,7 @@ export const display = localFont({
 });
 
 // Tanker — the block voice: numerals, marks, and data labels, where a
-// hairline script stops being legible (race results, the V12 mark).
+// hairline script stops being legible (race results, the VD mark).
 export const block = localFont({
   src: "../fonts/Tanker-Regular.woff2",
   weight: "400",

@@ -3,7 +3,6 @@ import { Driver } from "@/components/chapters/Driver";
 import { Stats } from "@/components/chapters/Stats";
 import { Beginnings } from "@/components/chapters/Beginnings";
 import { RoadToF1 } from "@/components/chapters/RoadToF1";
-import { QuoteScrub } from "@/components/chapters/QuoteScrub";
 import { Gallery } from "@/components/chapters/Gallery";
 import { Life } from "@/components/chapters/Life";
 import { Partners } from "@/components/chapters/Partners";
@@ -17,7 +16,6 @@ export default function Home() {
       <Stats />
       <Beginnings />
       <RoadToF1 />
-      <QuoteScrub />
       <Gallery />
       <Life />
       <Partners />

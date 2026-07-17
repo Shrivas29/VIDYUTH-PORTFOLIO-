@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { ParallaxFrame } from "@/components/ParallaxFrame";
+import { SeamCurtain } from "@/components/SeamCurtain";
 import { SectionMarker } from "@/components/SectionMarker";
 import { driver } from "@/data/site";
 
 export function Driver() {
   return (
-    <section id="driver" className="bg-graph px-5 py-24 md:px-12 lg:px-20">
+    <section id="driver" className="relative bg-graph px-5 py-24 md:px-12 lg:px-20">
+      <SeamCurtain />
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="The Driver" />
         <p className="mt-10 max-w-[34ch] font-body text-[clamp(1.5rem,3vw,2.2rem)] font-semibold leading-snug">

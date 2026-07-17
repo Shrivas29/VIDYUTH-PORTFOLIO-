@@ -5,9 +5,9 @@ import { SectionMarker } from "./SectionMarker";
 import { Sticker12 } from "./Sticker12";
 
 describe("primitives", () => {
-  it("Monogram renders an svg with V12 title", () => {
+  it("Monogram renders an svg with VD title", () => {
     render(<Monogram />);
-    expect(screen.getByTitle("V12")).toBeInTheDocument();
+    expect(screen.getByTitle("VD")).toBeInTheDocument();
   });
   it("SectionMarker renders its label uppercase", () => {
     render(<SectionMarker label="The Driver" />);

@@ -28,7 +28,7 @@ export function Header() {
       className="fixed inset-x-0 top-0 flex items-center justify-between px-5 py-4 md:px-8"
       style={{ zIndex: "var(--z-header)" }}
     >
-      <a href="#hero" aria-label="V12 — back to top" className="cursor-pointer">
+      <a href="#hero" aria-label="VD — back to top" className="cursor-pointer">
         <Monogram />
       </a>
       <div ref={ref} className="relative">
