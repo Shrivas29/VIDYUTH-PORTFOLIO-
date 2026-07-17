@@ -47,6 +47,8 @@ export const lifeCards = [
   { title: "The dream", text: "Every champion's story starts in a kart. His has already started." },
 ];
 
+export const beginningsQuote = "I want to be on that grid.";
+
 export const quote = "Too young to drive a car. Fast enough to race one.";
 
 export const chapters = [
