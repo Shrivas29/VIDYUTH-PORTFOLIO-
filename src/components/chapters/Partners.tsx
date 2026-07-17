@@ -6,7 +6,7 @@ export function Partners() {
   return (
     <section id="partners" className="bg-graph px-5 py-24 md:px-12 lg:px-20">
       <div className="mx-auto max-w-6xl">
-        <SectionMarker label="Partners" />
+        <SectionMarker label="Partners" as="p" />
         <h2 className="font-display mt-10 text-[clamp(2.5rem,7vw,5.5rem)]">Partner with Vidyuth</h2>
         <p className="mt-6 max-w-[55ch] text-[15px] leading-relaxed">
           Your brand on a rising driver&rsquo;s kart, suit, and story. Season sponsorships and
