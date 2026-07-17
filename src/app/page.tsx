@@ -1,3 +1,9 @@
+import { Hero } from "@/components/chapters/Hero";
+
 export default function Home() {
-  return <main>Vidyuth</main>;
+  return (
+    <main>
+      <Hero />
+    </main>
+  );
 }
