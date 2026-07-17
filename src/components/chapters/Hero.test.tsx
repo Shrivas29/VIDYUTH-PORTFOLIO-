@@ -77,8 +77,8 @@ describe("Hero SSR / first paint", () => {
 });
 
 describe("headlineDelayBase", () => {
-  it("returns the 1.4s post-splash delay when the splash was shown this load", () => {
-    expect(headlineDelayBase(true)).toBe(1.4);
+  it("returns the 2.7s post-splash delay when the splash was shown this load", () => {
+    expect(headlineDelayBase(true)).toBe(2.7);
   });
 
   it("returns the 0.3s short delay otherwise", () => {
@@ -92,14 +92,14 @@ describe("Hero headline entrance wiring", () => {
     vi.mocked(splashWasShownThisLoad).mockReset().mockReturnValue(false);
   });
 
-  it("schedules the entrance at the 1.4s post-splash delay (+ stagger) when the splash was shown this load", () => {
+  it("schedules the entrance at the 2.7s post-splash delay (+ stagger) when the splash was shown this load", () => {
     vi.mocked(splashWasShownThisLoad).mockReturnValue(true);
     render(<Hero />);
 
     const words = screen.getAllByTestId("word");
-    expect(words[0]).toHaveAttribute("data-delay", "1.4");
-    expect(words[1]).toHaveAttribute("data-delay", String(1.4 + 0.12));
-    expect(words[2]).toHaveAttribute("data-delay", String(1.4 + 2 * 0.12));
+    expect(words[0]).toHaveAttribute("data-delay", "2.7");
+    expect(words[1]).toHaveAttribute("data-delay", String(2.7 + 0.12));
+    expect(words[2]).toHaveAttribute("data-delay", String(2.7 + 2 * 0.12));
   });
 
   it("schedules the entrance at the 0.3s short delay (+ stagger) otherwise", () => {

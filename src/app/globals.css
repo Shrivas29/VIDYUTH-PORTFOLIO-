@@ -14,7 +14,29 @@
   --z-header: 50;
   --z-menu: 60;
   --z-transition: 65;
+  --z-boot: 69;
   --z-splash: 70;
+}
+
+/* Painted from the first server frame so the hero never flashes before the
+   splash mounts. The inline boot script hides it instantly when the splash
+   won't play; the React splash removes it on mount and covers the reveal.
+   The delayed fade is a no-JS fail-safe so the hero still appears. */
+#boot-cover {
+  position: fixed;
+  inset: 0;
+  background: var(--color-ink);
+  z-index: var(--z-boot);
+  animation: boot-cover-failsafe 0.4s ease-out 2.8s forwards;
+}
+:root[data-splash-skip] #boot-cover {
+  display: none;
+}
+@keyframes boot-cover-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 /* Elements enter from the bottom-right (DiagonalItem, chapter keyframes,

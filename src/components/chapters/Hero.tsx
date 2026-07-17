@@ -6,9 +6,9 @@ import { driver } from "@/data/site";
 import { splashWasShownThisLoad } from "@/components/Splash";
 
 const SHORT_DELAY = 0.3;
-// Tuned to Splash's DISPLAY_MS (1.3s) so the headline enters just before the
-// wipe finishes clearing it — same handoff overlap, roughly half the wait.
-const POST_SPLASH_DELAY = 1.4;
+// Tuned to Splash's DISPLAY_MS (2.6s) so the headline enters just before the
+// wipe finishes clearing it — same handoff overlap.
+const POST_SPLASH_DELAY = 2.7;
 const STAGGER = 0.12;
 
 // Isomorphic layout effect: `useLayoutEffect` warns when it runs during SSR
@@ -22,7 +22,7 @@ const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : use
 /**
  * Base headline entrance delay, in seconds, before the per-word `i * STAGGER`
  * offset is added. On a fresh load where the splash actually played, the
- * headline waits for the splash's ~1.3s display plus its 0.6s wipe-exit to
+ * headline waits for the splash's ~2.6s display plus its 0.6s wipe-exit to
  * clear before entering. On a repeat visit within the session (splash
  * skipped), a short delay reads better than a long one.
  *

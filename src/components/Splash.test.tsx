@@ -47,7 +47,7 @@ describe("Splash auto-hide timing", () => {
     MotionGlobalConfig.skipAnimations = false;
   });
 
-  it("shows on mount and unmounts once the ~1300ms display window elapses", async () => {
+  it("shows on mount and unmounts once the ~2600ms display window elapses", async () => {
     // Only fake the timer APIs the component itself calls (setTimeout);
     // leave requestAnimationFrame on its real implementation so motion's
     // frame loop can still tick and finish the exit animation below.
@@ -56,11 +56,11 @@ describe("Splash auto-hide timing", () => {
     expect(screen.getByTestId("splash")).toBeInTheDocument();
 
     // Not yet at the display duration: still showing.
-    act(() => vi.advanceTimersByTime(1000));
+    act(() => vi.advanceTimersByTime(2000));
     expect(screen.getByTestId("splash")).toBeInTheDocument();
 
     // Past the display duration: the hide timer has fired.
-    act(() => vi.advanceTimersByTime(450));
+    act(() => vi.advanceTimersByTime(700));
 
     let hidden = false;
     for (let i = 0; i < 10 && !hidden; i++) {
@@ -103,7 +103,7 @@ describe("Splash under React StrictMode", () => {
     expect(splashWasShownThisLoad()).toBe(true);
     expect(sessionStorage.getItem("v12-splash")).toBe("1");
 
-    act(() => vi.advanceTimersByTime(1350));
+    act(() => vi.advanceTimersByTime(2700));
 
     let hidden = false;
     for (let i = 0; i < 10 && !hidden; i++) {

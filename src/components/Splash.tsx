@@ -5,10 +5,11 @@ import { GooeyText } from "./ui/gooey-text-morphing";
 
 const SESSION_KEY = "v12-splash";
 
-// How long the splash holds before it wipes away. Kept short so the hero
-// reads as "loaded" fast; Hero's POST_SPLASH_DELAY is tuned to this so the
-// headline enters just as the wipe clears it.
-const DISPLAY_MS = 1300;
+// How long the splash holds before it wipes away — long enough for the
+// three-word gooey morph to land on the name unhurried. Hero's
+// POST_SPLASH_DELAY is tuned to this so the headline enters just as the
+// wipe clears it.
+const DISPLAY_MS = 2600;
 
 // Isomorphic layout effect: falls back to `useEffect` if this module is ever
 // evaluated where `window` doesn't exist (SSR never actually runs this
@@ -79,6 +80,10 @@ export function Splash() {
         setShow(true);
         sessionStorage.setItem(SESSION_KEY, "1");
       }
+      // React now owns the screen: the splash covers on fresh loads, the
+      // hero shows otherwise. Drop the boot cover either way (this is a
+      // layout effect, so the splash paints in the same commit — no gap).
+      document.getElementById("boot-cover")?.remove();
     }
     if (!willShow.current) return;
     const t = setTimeout(() => setShow(false), DISPLAY_MS);
@@ -106,8 +111,8 @@ export function Splash() {
                 (morphTime + cooldown tuned to DISPLAY_MS). The block voice
                 gives the threshold filter solid letterforms to merge. */}
             <GooeyText
-              texts={["Formula 1", "Vidyuth"]}
-              morphTime={0.9}
+              texts={["Karting", "Formula 1", "Vidyuth"]}
+              morphTime={0.95}
               cooldownTime={0.3}
               className="h-[clamp(4rem,16vw,9rem)] w-[min(92vw,44rem)]"
               textClassName="font-block text-[clamp(3rem,12vw,7rem)]"
