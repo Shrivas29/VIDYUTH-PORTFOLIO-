@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Monogram } from "./Monogram";
+import { GooeyText } from "./ui/gooey-text-morphing";
 
 const SESSION_KEY = "v12-splash";
 
@@ -97,13 +97,21 @@ export function Splash() {
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.94, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center gap-4"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col items-center gap-6"
           >
-            <Monogram inverted />
-            <span className="font-display text-white-soft text-3xl">Vidyuth</span>
+            {/* Gooey morph lands on the name by the time the wipe fires
+                (morphTime + cooldown tuned to DISPLAY_MS). The block voice
+                gives the threshold filter solid letterforms to merge. */}
+            <GooeyText
+              texts={["Formula 1", "Vidyuth"]}
+              morphTime={0.9}
+              cooldownTime={0.3}
+              className="h-[clamp(4rem,16vw,9rem)] w-[min(92vw,44rem)]"
+              textClassName="font-block text-[clamp(3rem,12vw,7rem)]"
+            />
             <motion.span
               className="block h-0.5 w-40 origin-left bg-green"
               initial={{ scaleX: 0 }}
