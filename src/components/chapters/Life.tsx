@@ -1,22 +1,38 @@
 "use client";
-import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { useBoxReveal } from "@/lib/useBoxReveal";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
 import { lifeCards } from "@/data/site";
 
 export function Life() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const reduced = useReducedMotion();
+  const reduced = useHydratedReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const clipPath = useBoxReveal(ref);
 
   return (
-    <section id="life" className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20">
+    <motion.section
+      id="life"
+      ref={ref}
+      className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20"
+      style={reduced ? undefined : { clipPath }}
+    >
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Life as a Driver" inverted />
         <div className="mt-12 flex flex-col">
           {lifeCards.map((card, i) => {
             const open = openIndex === i;
             return (
-              <div key={card.title} className="border-t border-white-soft/20 last:border-b">
+              <motion.div
+                key={card.title}
+                className="border-t border-white-soft/20 last:border-b"
+                initial={false}
+                whileInView={reduced ? undefined : { opacity: [0, 1], x: [-28, 0], y: [20, 0] }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ delay: i * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              >
                 <button
                   type="button"
                   aria-expanded={open}
@@ -51,11 +67,11 @@ export function Life() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }

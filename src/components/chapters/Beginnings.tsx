@@ -9,9 +9,15 @@ import { beginningsQuote, results, type RaceResult } from "@/data/site";
 
 const CARD_STEP = 344; // card width 320 + gap 24
 
-function ResultCard({ result }: { result: RaceResult }) {
+function ResultCard({ result, index, reduced }: { result: RaceResult; index: number; reduced: boolean }) {
   return (
-    <article className="flex h-72 w-80 shrink-0 snap-start flex-col bg-white-soft/90 p-6 shadow-[0_2px_24px_rgba(0,0,22,0.08)]">
+    <motion.article
+      className="flex h-72 w-80 shrink-0 snap-start flex-col bg-white-soft/90 p-6 shadow-[0_2px_24px_rgba(0,0,22,0.08)]"
+      initial={false}
+      whileInView={reduced ? undefined : { opacity: [0, 1], x: [44, 0], y: [20, 0] }}
+      viewport={{ once: true, margin: "-8%" }}
+      transition={{ delay: index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+    >
       <h3 className="border-b border-ink/60 pb-2 font-display text-2xl">{result.event}</h3>
       <p className="font-display mt-auto text-[clamp(4rem,10vw,6rem)]">P{result.finish}</p>
       <div className="mt-3 flex items-center gap-2">
@@ -22,7 +28,7 @@ function ResultCard({ result }: { result: RaceResult }) {
           </span>
         )}
       </div>
-    </article>
+    </motion.article>
   );
 }
 
@@ -39,8 +45,8 @@ export function Beginnings() {
         </blockquote>
         {reduced ? (
           <div className="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4">
-            {results.map((r) => (
-              <ResultCard key={r.event} result={r} />
+            {results.map((r, i) => (
+              <ResultCard key={r.event} result={r} index={i} reduced={reduced} />
             ))}
           </div>
         ) : (
@@ -54,8 +60,8 @@ export function Beginnings() {
                 whileTap={{ cursor: "grabbing" }}
                 className="flex w-max cursor-grab gap-6"
               >
-                {results.map((r) => (
-                  <ResultCard key={r.event} result={r} />
+                {results.map((r, i) => (
+                  <ResultCard key={r.event} result={r} index={i} reduced={reduced} />
                 ))}
               </motion.div>
             </div>

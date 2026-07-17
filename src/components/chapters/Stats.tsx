@@ -33,7 +33,7 @@ export function Stats() {
               key={c.label}
               className={`${cardBase} md:-mr-4 md:w-64`}
               style={reduced ? { rotate: c.rot } : undefined}
-              whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0], rotate: [0, c.rot] }}
+              whileInView={reduced ? undefined : { opacity: [0, 1], x: [-28, 0], y: [28, 0], rotate: [0, c.rot] }}
               {...cardReveal}
               transition={{ ...cardReveal.transition, delay: i * 0.08 }}
             >
@@ -46,7 +46,7 @@ export function Stats() {
           <motion.div
             className={`${cardBase} md:-mr-4`}
             style={reduced ? { rotate: 2 } : undefined}
-            whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0], rotate: [0, 2] }}
+            whileInView={reduced ? undefined : { opacity: [0, 1], x: [-28, 0], y: [28, 0], rotate: [0, 2] }}
             {...cardReveal}
             transition={{ ...cardReveal.transition, delay: 0.24 }}
           >
@@ -58,7 +58,7 @@ export function Stats() {
           <motion.div
             className={cardBase}
             style={reduced ? { rotate: -1.5 } : undefined}
-            whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0], rotate: [0, -1.5] }}
+            whileInView={reduced ? undefined : { opacity: [0, 1], x: [-28, 0], y: [28, 0], rotate: [0, -1.5] }}
             {...cardReveal}
             transition={{ ...cardReveal.transition, delay: 0.32 }}
           >

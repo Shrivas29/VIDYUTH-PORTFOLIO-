@@ -10,17 +10,25 @@ import { gallery, type GalleryPhoto } from "@/data/site";
 
 const CARD_STEP = 424; // average card width 400 + gap 24
 
-function Photo({ photo }: { photo: GalleryPhoto }) {
+function Photo({ photo, index, reduced }: { photo: GalleryPhoto; index: number; reduced: boolean }) {
   return (
-    <Image
-      src={photo.src}
-      alt={photo.alt}
-      width={photo.width}
-      height={photo.height}
-      className="h-80 w-auto shrink-0 snap-start object-cover md:h-[28rem]"
-      sizes="(min-width: 768px) 45vw, 85vw"
-      draggable={false}
-    />
+    <motion.div
+      className="shrink-0 snap-start"
+      initial={false}
+      whileInView={reduced ? undefined : { opacity: [0, 1], x: [44, 0], y: [20, 0] }}
+      viewport={{ once: true, margin: "-8%" }}
+      transition={{ delay: index * 0.06, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <Image
+        src={photo.src}
+        alt={photo.alt}
+        width={photo.width}
+        height={photo.height}
+        className="h-80 w-auto object-cover md:h-[28rem]"
+        sizes="(min-width: 768px) 45vw, 85vw"
+        draggable={false}
+      />
+    </motion.div>
   );
 }
 
@@ -34,8 +42,8 @@ export function Gallery() {
         <SectionMarker label="Gallery" />
         {reduced ? (
           <div className="mt-12 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4">
-            {gallery.map((photo) => (
-              <Photo key={photo.src} photo={photo} />
+            {gallery.map((photo, i) => (
+              <Photo key={photo.src} photo={photo} index={i} reduced={reduced} />
             ))}
           </div>
         ) : (
@@ -49,8 +57,8 @@ export function Gallery() {
                 whileTap={{ cursor: "grabbing" }}
                 className="flex w-max cursor-grab gap-6"
               >
-                {gallery.map((photo) => (
-                  <Photo key={photo.src} photo={photo} />
+                {gallery.map((photo, i) => (
+                  <Photo key={photo.src} photo={photo} index={i} reduced={reduced} />
                 ))}
               </motion.div>
             </div>

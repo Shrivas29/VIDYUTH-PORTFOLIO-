@@ -1,14 +1,23 @@
 "use client";
+import { useRef } from "react";
 import { motion } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
+import { useBoxReveal } from "@/lib/useBoxReveal";
 import { SectionMarker } from "@/components/SectionMarker";
 import { RevealHeading } from "@/components/RevealHeading";
 import { roadToF1 } from "@/data/site";
 
 export function RoadToF1() {
   const reduced = useHydratedReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const clipPath = useBoxReveal(ref);
   return (
-    <section id="road-to-f1" className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20">
+    <motion.section
+      id="road-to-f1"
+      ref={ref}
+      className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20"
+      style={reduced ? undefined : { clipPath }}
+    >
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Road to F1" inverted as="p" />
         <RevealHeading wrapClassName="mt-10" className="font-display text-[clamp(3rem,9vw,7.5rem)]">
@@ -20,7 +29,7 @@ export function RoadToF1() {
               key={stage.stage}
               className="grid gap-3 border-t border-white-soft/20 py-8 md:grid-cols-[80px_1fr_1fr] md:gap-8"
               initial={false}
-              whileInView={reduced ? undefined : { opacity: [0, 1], x: [-32, 0] }}
+              whileInView={reduced ? undefined : { opacity: [0, 1], x: [-36, 0], y: [20, 0] }}
               viewport={{ once: true, margin: "-15%" }}
               transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
@@ -44,6 +53,6 @@ export function RoadToF1() {
           ))}
         </ol>
       </div>
-    </section>
+    </motion.section>
   );
 }
