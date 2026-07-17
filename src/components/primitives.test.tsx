@@ -14,6 +14,10 @@ describe("primitives", () => {
     expect(screen.getByText("The Driver")).toBeInTheDocument();
     expect(screen.getByText("The Driver")).toHaveClass("uppercase");
   });
+  it("SectionMarker inverts to white-soft on dark sections", () => {
+    render(<SectionMarker label="Road to F1" inverted />);
+    expect(screen.getByText("Road to F1")).toHaveClass("text-white-soft");
+  });
   it("Sticker12 renders the race number", () => {
     render(<Sticker12 />);
     expect(screen.getByTitle("Race number 12")).toBeInTheDocument();

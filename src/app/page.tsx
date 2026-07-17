@@ -2,6 +2,7 @@ import { Hero } from "@/components/chapters/Hero";
 import { Driver } from "@/components/chapters/Driver";
 import { Stats } from "@/components/chapters/Stats";
 import { Beginnings } from "@/components/chapters/Beginnings";
+import { RoadToF1 } from "@/components/chapters/RoadToF1";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
       <Driver />
       <Stats />
       <Beginnings />
+      <RoadToF1 />
     </main>
   );
 }
