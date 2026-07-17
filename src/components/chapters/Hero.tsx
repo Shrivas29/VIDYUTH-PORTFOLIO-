@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { AsciiVideo } from "@/components/AsciiVideo";
 import { driver } from "@/data/site";
 import { splashWasShownThisLoad } from "@/components/Splash";
 
@@ -143,6 +144,16 @@ export function Hero() {
           <source src="/media/hero.webm" type="video/webm" />
           <source src="/media/hero.mp4" type="video/mp4" />
         </video>
+        <AsciiVideo videoRef={videoRef} />
+        {/* pfx.halftone at ~20: static dot screen, cheaper as CSS than per-frame canvas */}
+        <div
+          className="absolute inset-0 opacity-15 mix-blend-overlay"
+          style={{
+            backgroundImage: "radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px)",
+            backgroundSize: "4px 4px",
+          }}
+          aria-hidden
+        />
       </motion.div>
       <div className="absolute inset-0 bg-ink/35" aria-hidden />
       <motion.div
