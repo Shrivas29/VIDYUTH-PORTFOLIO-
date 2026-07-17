@@ -17,10 +17,11 @@
   --z-splash: 70;
 }
 
-/* Chapters overshoot 14vw right mid-arrival (DiagonalArrival); clip at the
-   content wrapper so the overshoot never widens the document. `clip`, not
-   `hidden`, so main doesn't become a scroll container (root-level clip is
-   ignored by Chromium's programmatic scrolling, so it lives here instead). */
+/* Elements enter from the bottom-right (DiagonalItem, chapter keyframes,
+   RevealHeading's 6vw drift); clip at the content wrapper so mid-entrance
+   overshoot never widens the document. `clip`, not `hidden`, so main
+   doesn't become a scroll container (root-level clip is ignored by
+   Chromium's programmatic scrolling, so it lives here instead). */
 main {
   overflow-x: clip;
 }

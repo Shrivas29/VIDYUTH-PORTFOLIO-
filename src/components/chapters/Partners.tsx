@@ -27,7 +27,7 @@ export function Partners() {
               key={slot}
               className="flex h-36 flex-col items-center justify-center gap-2 border border-dashed border-ink/50"
               initial={false}
-              whileInView={reduced ? undefined : { opacity: [0, 1], x: [-28, 0], y: [28, 0] }}
+              whileInView={reduced ? undefined : { opacity: [0, 1], x: [48, 0], y: [32, 0] }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ delay: i * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
@@ -38,7 +38,7 @@ export function Partners() {
         </div>
         <motion.div
           initial={false}
-          whileInView={reduced ? undefined : { opacity: [0, 1], y: [24, 0] }}
+          whileInView={reduced ? undefined : { opacity: [0, 1], x: [40, 0], y: [24, 0] }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ delay: 0.28, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
