@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { results, derivedStats, driver, chapters } from "./site";
+import { results, derivedStats, driver, chapters, socials, gallery } from "./site";
 
 describe("results data", () => {
   it("contains exactly the five confirmed races", () => {
@@ -19,6 +19,21 @@ describe("results data", () => {
     expect(driver.age).toBe(11);
     expect(driver.number).toBe(12);
     expect(driver.name).toBe("Vidyuth");
+  });
+  it("exports socials as an array of label/href pairs", () => {
+    expect(Array.isArray(socials)).toBe(true);
+    socials.forEach((s) => {
+      expect(typeof s.label).toBe("string");
+      expect(typeof s.href).toBe("string");
+    });
+  });
+  it("gallery photos all have alt text and real dimensions", () => {
+    expect(gallery.length).toBeGreaterThan(0);
+    gallery.forEach((p) => {
+      expect(p.alt.length).toBeGreaterThan(10);
+      expect(p.width).toBeGreaterThan(0);
+      expect(p.height).toBeGreaterThan(0);
+    });
   });
   it("has all ten chapters in order", () => {
     expect(chapters.map((c) => c.id)).toEqual([

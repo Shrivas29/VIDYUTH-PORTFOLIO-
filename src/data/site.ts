@@ -51,6 +51,9 @@ export const beginningsQuote = "I want to be on that grid.";
 
 export const quote = "Too young to drive a car. Fast enough to race one.";
 
+// Ships empty until the client supplies links; Footer renders only what's here.
+export const socials: { label: string; href: string }[] = [];
+
 export type GalleryPhoto = { src: string; width: number; height: number; alt: string };
 
 export const gallery: GalleryPhoto[] = [
