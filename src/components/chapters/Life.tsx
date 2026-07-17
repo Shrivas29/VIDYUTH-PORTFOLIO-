@@ -1,7 +1,6 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { useBoxReveal } from "@/lib/useBoxReveal";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
 import { lifeCards } from "@/data/site";
@@ -9,16 +8,9 @@ import { lifeCards } from "@/data/site";
 export function Life() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const reduced = useHydratedReducedMotion();
-  const ref = useRef<HTMLElement>(null);
-  const clipPath = useBoxReveal(ref);
 
   return (
-    <motion.section
-      id="life"
-      ref={ref}
-      className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20"
-      style={reduced ? undefined : { clipPath }}
-    >
+    <section id="life" className="bg-ink px-5 py-24 text-white-soft md:px-12 lg:px-20">
       <div className="mx-auto max-w-6xl">
         <SectionMarker label="Life as a Driver" inverted />
         <div className="mt-12 flex flex-col">
@@ -72,6 +64,6 @@ export function Life() {
           })}
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

@@ -13,7 +13,16 @@
   --z-sticky: 40;
   --z-header: 50;
   --z-menu: 60;
+  --z-transition: 65;
   --z-splash: 70;
+}
+
+/* Chapters overshoot 14vw right mid-arrival (DiagonalArrival); clip at the
+   content wrapper so the overshoot never widens the document. `clip`, not
+   `hidden`, so main doesn't become a scroll container (root-level clip is
+   ignored by Chromium's programmatic scrolling, so it lives here instead). */
+main {
+  overflow-x: clip;
 }
 
 body {

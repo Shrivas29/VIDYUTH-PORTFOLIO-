@@ -48,7 +48,13 @@ function CurtainInner({ finish }: { finish: "top" | "bottom" }) {
       aria-hidden="true"
       className="pointer-events-none absolute inset-x-0 top-0 z-30 h-svh max-h-full overflow-hidden"
     >
-      <motion.div className="grid size-full place-items-center bg-ink" style={{ y }}>
+      {/* skewY slants the lifting edge into a diagonal sweep; the -inset-y
+          bleed keeps the slanted corners from exposing the content beneath
+          (tan 4deg * half the widest supported viewport). */}
+      <motion.div
+        className="absolute inset-x-0 -inset-y-24 grid place-items-center bg-ink"
+        style={{ y, skewY: -4 }}
+      >
         <Monogram inverted />
         <div className="absolute inset-x-0 bottom-0 h-1.5 bg-green" />
       </motion.div>

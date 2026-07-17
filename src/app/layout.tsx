@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/SmoothScroll";
 import { Splash } from "@/components/Splash";
 import { Header } from "@/components/Header";
 import { PartnerChip } from "@/components/PartnerChip";
+import { ChapterTransition } from "@/components/ChapterTransition";
 
 export const metadata: Metadata = {
   title: "Vidyuth #12 — Karting Driver",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Splash />
           <Header />
           {children}
+          <ChapterTransition />
           <PartnerChip />
         </SmoothScroll>
       </body>
