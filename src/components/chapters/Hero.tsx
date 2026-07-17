@@ -6,54 +6,69 @@ import { splashWasShownThisLoad } from "@/components/Splash";
 
 const SHORT_DELAY = 0.3;
 const POST_SPLASH_DELAY = 2.5;
+const STAGGER = 0.12;
 
 /**
- * Headline entrance delay, in seconds. On a fresh load where the splash
- * actually played, the headline should wait for the splash's ~2.4s display
- * plus its 0.6s wipe-exit to clear before entering. On a repeat visit within
- * the session (splash skipped), a short delay reads better than a long one.
+ * Base headline entrance delay, in seconds, before the per-word `i * STAGGER`
+ * offset is added. On a fresh load where the splash actually played, the
+ * headline waits for the splash's ~2.4s display plus its 0.6s wipe-exit to
+ * clear before entering. On a repeat visit within the session (splash
+ * skipped), a short delay reads better than a long one.
  *
- * `splashWasShownThisLoad()` is only meaningful once Splash's own mount
- * effect has committed (it's a module-global flip inside that effect), so it
- * must never be read during render. This hook defaults to the short delay
- * and only lengthens it from an effect after mount — Splash renders before
- * `{children}` in the root layout, so its effect always commits first, but
- * defaulting short and upgrading is safe either way: the state flip lands
- * within milliseconds of mount, long before either delay has elapsed, so the
- * headline (still at its pre-animation opacity-0 state) never visibly jumps.
+ * Pure and exported so this branch is unit-testable directly, without having
+ * to drive framer-motion's WAAPI timeline through a real browser.
  */
-function useHeadlineDelay(): number {
-  const [delay, setDelay] = useState(SHORT_DELAY);
-  useEffect(() => {
-    if (splashWasShownThisLoad()) setDelay(POST_SPLASH_DELAY);
-  }, []);
-  return delay;
+export function headlineDelayBase(splashShown: boolean): number {
+  return splashShown ? POST_SPLASH_DELAY : SHORT_DELAY;
 }
 
 export function Hero() {
   // `useReducedMotion()` resolves synchronously from `matchMedia` on the
   // client's very first render, which differs from the server's guess
-  // (there's no `window` during SSR, so it always renders as "not reduced").
-  // Two different things follow from that:
-  //
-  // 1. It must never gate *what markup renders* on the first paint (an
-  //    `initial`/`autoPlay` ternary keyed on it would render differently on
-  //    the server vs. the client's first pass, producing a real hydration
-  //    mismatch — confirmed via Playwright: React logged a console error,
-  //    and worse, the video had already started playing natively off the
-  //    server-rendered `autoplay` attribute before React's hydration pass
-  //    could remove it, so simply toggling the attribute never actually
-  //    stopped it). So `initial` below is static, and the video never
-  //    carries a declarative `autoPlay` attribute at all.
-  // 2. It's perfectly safe to read directly inside an effect, since effects
-  //    never run during SSR and are already correct by their first client
-  //    invocation (no interim wrong value to defend against, unlike the
-  //    splash flag above). Playback and the headline's transition timing
-  //    are both driven from effects/runtime config, never from SSR-visible
-  //    attributes, so they read it straight from the hook.
+  // (there's no `window` during SSR, so it resolves to `null` there). It's
+  // safe to read directly during render for the video effect below (effects
+  // never run during SSR, so there's no interim wrong value to defend
+  // against there) — but the headline's SSR markup below never branches on
+  // it at all, for a stronger reason than hydration mismatch: the words
+  // must render as real, visible content even if client JS never runs, full
+  // stop. See `entrance` below.
   const reduced = useReducedMotion();
-  const delayBase = useHeadlineDelay();
   const words = driver.headline.split(" ");
+
+  // Server render and the client's first paint both render the headline as
+  // plain, always-visible spans — no inline opacity/transform, nothing
+  // gated on an effect. `entrance` starts `null` and stays `null` forever
+  // under reduced motion (the headline is simply always visible, no
+  // animation). Otherwise, the effect below flips it to the splash-aware
+  // delay, and only once that value is known do the animated `motion.span`
+  // words mount at all — they never mount with a placeholder delay that
+  // later needs correcting.
+  //
+  // That ordering is what fixes the previous bug: framer-motion never
+  // reschedules an already-started animation when only a `transition` prop
+  // changes on a live element, so a "start at the wrong delay, then update
+  // state to the right one" approach silently keeps running at the wrong
+  // delay. Mounting the motion element for the first time only after the
+  // correct delay is computed sidesteps that entirely — there is no
+  // earlier, wrong animation to reschedule.
+  //
+  // This must be a plain `useEffect`, not `useLayoutEffect`: React fires
+  // *every* layout effect in the tree before *any* passive effect, so a
+  // layout effect here would run before Splash's own (passive) mount effect
+  // has had a chance to flip `shownThisLoad` — reading it too early and
+  // always seeing the pre-splash default. Splash.tsx's ordering guarantee
+  // ("its effect always commits first") only holds between two effects of
+  // the same kind; verified by testing that a layout effect here silently
+  // regresses to the short delay on every load, splash or not. A passive
+  // effect keeps Hero's read after Splash's write, at the cost of accepting
+  // a one-frame flash between the static text and the motion span's
+  // pre-animation state — an explicitly acceptable tradeoff here.
+  const [entrance, setEntrance] = useState<{ delayBase: number } | null>(null);
+
+  useEffect(() => {
+    if (reduced) return; // stays static/visible forever — content, never gated on animation
+    setEntrance({ delayBase: headlineDelayBase(splashWasShownThisLoad()) });
+  }, [reduced]);
 
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
@@ -63,7 +78,10 @@ export function Hero() {
       video.pause();
       video.load(); // drop back to the poster frame rather than a frozen mid-loop frame
     } else {
-      video.play().catch(() => {}); // muted autoplay is allowed; ignore rare rejections
+      // Optional chaining guards jsdom's test-environment `play()`, which
+      // returns `undefined` instead of a Promise; real browsers always
+      // return a Promise here, so this is a no-op there.
+      video.play()?.catch(() => {}); // muted autoplay is allowed; ignore rare rejections
     }
   }, [reduced]);
 
@@ -87,21 +105,27 @@ export function Hero() {
           className="font-display text-center text-white-soft"
           style={{ fontSize: "clamp(4rem, 17vw, 15rem)" }}
         >
-          {words.map((w, i) => (
-            <motion.span
-              key={w}
-              className="inline-block"
-              initial={{ y: "0.4em", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={
-                reduced
-                  ? { duration: 0 }
-                  : { delay: delayBase + i * 0.12, duration: 0.7, ease: [0.22, 1, 0.36, 1] }
-              }
-            >
-              {w}&nbsp;
-            </motion.span>
-          ))}
+          {words.map((w, i) =>
+            entrance ? (
+              <motion.span
+                key={w}
+                className="inline-block"
+                initial={{ y: "0.4em", opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{
+                  delay: entrance.delayBase + i * STAGGER,
+                  duration: 0.7,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                {w}&nbsp;
+              </motion.span>
+            ) : (
+              <span key={w} className="inline-block">
+                {w}&nbsp;
+              </span>
+            )
+          )}
         </h1>
       </div>
       <p className="absolute inset-x-0 bottom-8 text-center text-xs font-bold uppercase tracking-[0.04em] text-white-soft">
