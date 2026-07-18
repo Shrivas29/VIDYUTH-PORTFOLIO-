@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { animate, AnimatePresence, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
 
 const SESSION_KEY = "v12-splash";
 
-// How long the splash holds before it wipes away — matched to the V12 forge
-// clip: green sparks converge into the emblem by ~2.3s, then it holds on the
-// crisp mark until the wipe fires. Hero's POST_SPLASH_DELAY is tuned to this
-// so the headline enters just as the wipe clears it.
+// How long the splash holds before it wipes away — the loading counter runs
+// 0 -> 100 over ~2.1s, holds a beat on 100, then the curtain lifts. Hero's
+// POST_SPLASH_DELAY is tuned to this so the headline enters just as the wipe
+// clears it.
 const DISPLAY_MS = 2600;
 
 // Isomorphic layout effect: falls back to `useEffect` if this module is ever
@@ -65,6 +65,24 @@ export function Splash() {
   const decided = useRef(false);
   const willShow = useRef(false);
 
+  // Loading counter (0 -> 100) and the progress hairline it drives.
+  const progress = useMotionValue(0);
+  const lineWidth = useTransform(progress, (v) => `${v}%`);
+  const [count, setCount] = useState(0);
+
+  // Runs once when the splash shows (it only ever shows once per session, so
+  // progress/count start at 0 and need no reset). onUpdate fires in rAF, not
+  // synchronously in the effect body.
+  useEffect(() => {
+    if (!show || reduced) return;
+    const controls = animate(progress, 100, {
+      duration: 2.1,
+      ease: [0.33, 1, 0.68, 1],
+      onUpdate: (v) => setCount(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [show, reduced, progress]);
+
   useIsoLayoutEffect(() => {
     if (!decided.current) {
       decided.current = true;
@@ -95,25 +113,45 @@ export function Splash() {
         <motion.div
           data-testid="splash"
           aria-hidden="true"
-          // Ink field behind the clip so the letterboxed edges of the square
-          // forge video read as one seamless surface on any viewport.
-          className="fixed inset-0 grid place-items-center overflow-hidden bg-ink"
+          className="fixed inset-0 overflow-hidden bg-ink text-white-soft"
           style={{ zIndex: "var(--z-splash)" }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
         >
-          {/* The V12 emblem forges out of green sparks (a reversed Higgsfield
-              dispersal clip). It only ever plays forward once, holding on the
-              crisp mark; the wipe fires at DISPLAY_MS. */}
-          <video
-            className="size-full object-contain"
-            src="/media/logo-reveal.mp4"
-            poster="/media/logo-reveal-poster.jpg"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-          />
+          <div className="flex h-full flex-col justify-between px-6 py-8 md:px-10 md:py-10">
+            {/* Top meta row */}
+            <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em] text-white-soft/45">
+              <span>Vidyuth</span>
+              <span>Nº12</span>
+            </div>
+
+            {/* Emblem, revealed with a crisp upward mask wipe */}
+            <div className="flex flex-1 items-center justify-center overflow-hidden">
+              <motion.img
+                src="/media/v12-mark.svg"
+                alt=""
+                className="w-[min(60vw,340px)]"
+                initial={{ y: "18%", opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+                animate={{ y: "0%", opacity: 1, clipPath: "inset(0 0 0% 0)" }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              />
+            </div>
+
+            {/* Loading counter + progress hairline */}
+            <div>
+              <div className="flex items-end justify-between gap-4">
+                <span className="whitespace-nowrap pb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white-soft/45 md:text-[11px] md:tracking-[0.2em]">
+                  Kart → Formula 1
+                </span>
+                <span className="font-block text-[clamp(2rem,10vw,5.5rem)] leading-none tabular-nums">
+                  {String(count).padStart(3, "0")}
+                </span>
+              </div>
+              <div className="relative mt-4 h-px w-full overflow-hidden bg-white-soft/15">
+                <motion.span className="absolute inset-y-0 left-0 bg-green" style={{ width: lineWidth }} />
+              </div>
+            </div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
