@@ -19,14 +19,16 @@
   --z-splash: 70;
 }
 
-/* Painted from the first server frame so the hero never flashes before the
-   splash mounts. The inline boot script hides it instantly when the splash
-   won't play; the React splash removes it on mount and covers the reveal.
-   The delayed fade is a no-JS fail-safe so the hero still appears. */
+/* Painted from the first server frame so nothing flashes before the splash
+   mounts. Ink, to match the dark V12 forge splash — the cover hands off to
+   the splash video seamlessly (dark to dark). The inline boot script hides
+   it instantly when the splash won't play, so returning visitors get the
+   cream hero with no dark flash; the React splash removes it on mount. The
+   delayed fade is a no-JS fail-safe so the hero still appears. */
 #boot-cover {
   position: fixed;
   inset: 0;
-  background: var(--color-paper);
+  background: var(--color-ink);
   z-index: var(--z-boot);
   animation: boot-cover-failsafe 0.4s ease-out 2.8s forwards;
 }
@@ -83,6 +85,12 @@ body {
 }
 
 h1, h2, h3 { text-wrap: balance; }
+
+/* Racing-green text selection, brand-wide. */
+::selection {
+  background: var(--color-green);
+  color: var(--color-ink);
+}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

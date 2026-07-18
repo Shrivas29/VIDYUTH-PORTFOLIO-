@@ -1,5 +1,5 @@
 import { Monogram } from "@/components/Monogram";
-import { chapters, socials } from "@/data/site";
+import { chapters, socials, contactEmail } from "@/data/site";
 
 const footerLink =
   "cursor-pointer text-sm font-bold text-white-soft/80 transition-colors duration-150 hover:text-green focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green";
@@ -20,11 +20,25 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <p className="text-xs font-bold uppercase tracking-[0.04em] text-white-soft/70">Contact</p>
             <p className="max-w-[30ch] text-sm text-white-soft/85">
-              Sponsorship enquiries open. Direct contact details coming soon.
+              Sponsorship and race enquiries welcome.
             </p>
+            <a href={`mailto:${contactEmail}`} className={footerLink}>
+              {contactEmail}
+            </a>
             {socials.map((s) => (
-              <a key={s.href} href={s.href} className={footerLink} rel="noopener noreferrer" target="_blank">
-                {s.label}
+              <a
+                key={s.href}
+                href={s.href}
+                rel="noopener noreferrer"
+                target="_blank"
+                className="mt-1 inline-flex w-fit min-h-11 cursor-pointer items-center gap-2 border border-white-soft/25 px-4 py-2 text-sm font-bold text-white-soft transition-colors duration-150 hover:border-green hover:text-green focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" />
+                </svg>
+                Follow @vidyuthracing
               </a>
             ))}
           </div>

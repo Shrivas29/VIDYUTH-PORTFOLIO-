@@ -54,6 +54,7 @@ export function Beginnings() {
             <div ref={viewportRef} className="mt-12 overflow-hidden">
               <motion.div
                 ref={trackRef}
+                data-cursor="Drag"
                 drag="x"
                 dragConstraints={viewportRef}
                 style={{ x }}

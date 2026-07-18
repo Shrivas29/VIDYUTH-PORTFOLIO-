@@ -3,8 +3,10 @@ import { motion } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
 import { RevealHeading } from "@/components/RevealHeading";
+import { contactEmail } from "@/data/site";
 
 const logoSlots = ["Season partner", "Race-day partner", "Kit partner"];
+const mailto = `mailto:${contactEmail}?subject=${encodeURIComponent("Partnership with Vidyuth Nº12")}`;
 
 export function Partners() {
   const reduced = useHydratedReducedMotion();
@@ -35,17 +37,31 @@ export function Partners() {
           ))}
         </div>
         <motion.div
+          className="mt-12 flex flex-wrap items-center gap-4"
           initial={false}
           whileInView={reduced ? undefined : { opacity: [0, 1], x: [40, 0], y: [24, 0] }}
           viewport={{ once: true, margin: "-10%" }}
           transition={{ delay: 0.28, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <a
-            href="#contact"
-            className="mt-12 inline-flex min-h-11 cursor-pointer items-center bg-green px-8 py-3 text-sm font-extrabold uppercase tracking-[0.04em] text-ink transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+            href={mailto}
+            className="inline-flex min-h-11 cursor-pointer items-center bg-green px-8 py-3 text-sm font-extrabold uppercase tracking-[0.04em] text-ink transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
             style={{ clipPath: "polygon(4% 0, 100% 0, 96% 100%, 0 100%)" }}
           >
             Start the conversation
+          </a>
+          <a
+            href="/partner-deck.html"
+            className="inline-flex min-h-11 cursor-pointer items-center gap-2 border border-ink px-8 py-3 text-sm font-extrabold uppercase tracking-[0.04em] text-ink transition-colors duration-200 hover:bg-ink hover:text-paper focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+          >
+            View the media kit
+          </a>
+          <a
+            href="/vidyuth-partner-deck.pdf"
+            download
+            className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 text-sm font-bold uppercase tracking-[0.04em] text-ink/70 underline-offset-4 transition-colors duration-200 hover:text-ink hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+          >
+            <span aria-hidden>↓</span> Download PDF
           </a>
         </motion.div>
       </div>

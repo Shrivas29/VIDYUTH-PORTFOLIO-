@@ -49,8 +49,23 @@ export const lifeCards = [
 
 export const beginningsQuote = "I want to be on that grid.";
 
-// Ships empty until the client supplies links; Footer renders only what's here.
-export const socials: { label: string; href: string }[] = [];
+// His message to everyone following along — used as the standalone creed band.
+export const creed = "Anything can be achieved if you just work hard enough.";
+
+// Next race, for the countdown. PLACEHOLDER date/venue — update with the real
+// round and the countdown recalculates automatically. If the date is in the
+// past the strip shows "Race weekend is here".
+export const nextRace = {
+  event: "IAME Series India — Round 3",
+  venue: "Kari Motor Speedway, Coimbatore",
+  date: "2026-09-13T09:00:00+05:30",
+};
+
+export const contactEmail = "vidyuthracing@gmail.com";
+
+export const socials: { label: string; href: string }[] = [
+  { label: "Instagram", href: "https://www.instagram.com/vidyuthracing/" },
+];
 
 export type GalleryPhoto = { src: string; width: number; height: number; alt: string };
 
@@ -68,6 +83,9 @@ export const gallery: GalleryPhoto[] = [
   { src: "/media/photo-13.webp", width: 1066, height: 1600, alt: "Suited up at the fence, helmet on, waiting for track time" },
 ];
 
+// Chapters painted on ink — fixed chrome (header, side nav) flips to light over these.
+export const darkChapters = new Set(["road-to-f1", "highlight", "life", "contact"]);
+
 export const chapters = [
   { id: "hero", label: "Start" },
   { id: "driver", label: "The Driver" },
@@ -75,8 +93,8 @@ export const chapters = [
   { id: "beginnings", label: "Beginnings" },
   { id: "road-to-f1", label: "Road to F1" },
   { id: "gallery", label: "Gallery" },
+  { id: "highlight", label: "Onboard" },
   { id: "life", label: "Life as a Driver" },
-  { id: "climb", label: "The Climb" },
   { id: "partners", label: "Partners" },
   { id: "contact", label: "Contact" },
 ];

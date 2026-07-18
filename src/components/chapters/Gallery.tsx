@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, wrap } from "motion/react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { SectionMarker } from "@/components/SectionMarker";
 import { SeamAccent } from "@/components/SeamAccent";
+import { Lightbox } from "@/components/Lightbox";
 import { gallery, type GalleryPhoto } from "@/data/site";
 
 /**
@@ -16,13 +17,30 @@ import { gallery, type GalleryPhoto } from "@/data/site";
  * Reduced motion falls back to the plain snap-scroll track.
  */
 
+// No permanent `will-change` here: with 44 tiles it pins 44 GPU layers for
+// the whole page life. The only thing that transforms continuously is the
+// drag container (which keeps its own will-change); a tile only rotates on
+// hover, which composites fine on demand.
 const polaroid =
-  "h-fit w-fit border-[10px] border-b-[28px] border-white shadow-xl transition-transform duration-300 ease-out even:mt-[60%] even:rotate-3 odd:-rotate-2 hover:rotate-0 will-change-transform";
+  "h-fit w-fit border-[10px] border-b-[28px] border-white shadow-xl transition-transform duration-300 ease-out even:mt-[60%] even:rotate-3 odd:-rotate-2 hover:rotate-0";
 
-function WallItem({ photo, index, reduced }: { photo: GalleryPhoto; index: number; reduced: boolean }) {
+function WallItem({
+  photo,
+  index,
+  reduced,
+  onOpen,
+}: {
+  photo: GalleryPhoto;
+  index: number;
+  reduced: boolean;
+  onOpen: (i: number) => void;
+}) {
   return (
-    <motion.div
-      className={polaroid}
+    <motion.button
+      type="button"
+      onClick={() => onOpen(index)}
+      aria-label={`View photo: ${photo.alt}`}
+      className={`${polaroid} focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green`}
       initial={false}
       whileInView={reduced ? undefined : { opacity: [0, 1], scale: [0.3, 1] }}
       viewport={{ once: true }}
@@ -37,15 +55,15 @@ function WallItem({ photo, index, reduced }: { photo: GalleryPhoto; index: numbe
         sizes="(min-width: 768px) 208px, 160px"
         draggable={false}
       />
-    </motion.div>
+    </motion.button>
   );
 }
 
-function PhotoBlock({ reduced }: { reduced: boolean }) {
+function PhotoBlock({ reduced, onOpen }: { reduced: boolean; onOpen: (i: number) => void }) {
   return (
     <div className="grid h-fit w-fit grid-cols-[repeat(6,max-content)] gap-x-14 gap-y-10 px-7 md:gap-x-28 md:px-14">
       {gallery.map((photo, i) => (
-        <WallItem key={photo.src} photo={photo} index={i} reduced={reduced} />
+        <WallItem key={photo.src} photo={photo} index={i} reduced={reduced} onOpen={onOpen} />
       ))}
     </div>
   );
@@ -57,6 +75,7 @@ export function Gallery() {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const dims = useRef({ w: 1, h: 1 });
+  const [lightbox, setLightbox] = useState<number | null>(null);
 
   useEffect(() => {
     if (reduced) return;
@@ -87,17 +106,24 @@ export function Gallery() {
         <div className="px-5 pb-24 pt-32 md:px-12 lg:px-20">
           <div className="mx-auto max-w-6xl">
             <div className="flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4">
-              {gallery.map((photo) => (
-                <Image
+              {gallery.map((photo, i) => (
+                <button
                   key={photo.src}
-                  src={photo.src}
-                  alt={photo.alt}
-                  width={photo.width}
-                  height={photo.height}
-                  className="h-80 w-auto shrink-0 snap-start object-cover"
-                  sizes="85vw"
-                  draggable={false}
-                />
+                  type="button"
+                  onClick={() => setLightbox(i)}
+                  aria-label={`View photo: ${photo.alt}`}
+                  className="shrink-0 snap-start cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green"
+                >
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    width={photo.width}
+                    height={photo.height}
+                    className="h-80 w-auto object-cover"
+                    sizes="85vw"
+                    draggable={false}
+                  />
+                </button>
               ))}
             </div>
           </div>
@@ -110,6 +136,7 @@ export function Gallery() {
           <div className="h-dvh overflow-hidden">
             <motion.div
               ref={ref}
+              data-cursor="Drag to explore"
               className="grid h-fit w-fit cursor-grab grid-cols-[repeat(2,max-content)] will-change-transform active:cursor-grabbing"
               drag
               dragMomentum
@@ -117,13 +144,14 @@ export function Gallery() {
               style={{ x, y, touchAction: "pan-y" }}
             >
               {Array.from({ length: 4 }).map((_, block) => (
-                <PhotoBlock key={block} reduced={reduced} />
+                <PhotoBlock key={block} reduced={reduced} onOpen={setLightbox} />
               ))}
             </motion.div>
           </div>
         </>
       )}
       <SeamAccent />
+      <Lightbox index={lightbox} onClose={() => setLightbox(null)} onNav={setLightbox} />
     </section>
   );
 }

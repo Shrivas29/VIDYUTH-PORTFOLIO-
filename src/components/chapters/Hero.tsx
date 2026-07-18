@@ -70,9 +70,15 @@ export function Hero() {
     let raf = 0;
     const loop = () => {
       raf = requestAnimationFrame(loop);
+      // Do no seeking once the hero is scrolled away: outside [0,1] the clip
+      // is already parked at kart/F1, so there is nothing to scrub. This
+      // keeps the loop from touching `currentTime` while the rest of the
+      // page scrolls past.
+      const p = scrollYProgress.get();
+      if (p <= 0 || p >= 1) return;
       const dur = video.duration;
       if (!dur || !Number.isFinite(dur)) return;
-      const target = Math.max(0, Math.min(dur - 0.05, scrollYProgress.get() * dur));
+      const target = Math.max(0, Math.min(dur - 0.05, p * dur));
       const cur = video.currentTime;
       const diff = target - cur;
       if (Math.abs(diff) < 0.01) return;

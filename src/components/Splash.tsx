@@ -1,14 +1,13 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { GooeyText } from "./ui/gooey-text-morphing";
 
 const SESSION_KEY = "v12-splash";
 
-// How long the splash holds before it wipes away — long enough for the
-// three-word gooey morph to land on the name unhurried. Hero's
-// POST_SPLASH_DELAY is tuned to this so the headline enters just as the
-// wipe clears it.
+// How long the splash holds before it wipes away — matched to the V12 forge
+// clip: green sparks converge into the emblem by ~2.3s, then it holds on the
+// crisp mark until the wipe fires. Hero's POST_SPLASH_DELAY is tuned to this
+// so the headline enters just as the wipe clears it.
 const DISPLAY_MS = 2600;
 
 // Isomorphic layout effect: falls back to `useEffect` if this module is ever
@@ -96,35 +95,25 @@ export function Splash() {
         <motion.div
           data-testid="splash"
           aria-hidden="true"
-          className="fixed inset-0 grid place-items-center bg-paper"
+          // Ink field behind the clip so the letterboxed edges of the square
+          // forge video read as one seamless surface on any viewport.
+          className="fixed inset-0 grid place-items-center overflow-hidden bg-ink"
           style={{ zIndex: "var(--z-splash)" }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
-          <motion.div
-            initial={{ scale: 0.94, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col items-center gap-6"
-          >
-            {/* Gooey morph lands on the name by the time the wipe fires
-                (morphTime + cooldown tuned to DISPLAY_MS). The block voice
-                gives the threshold filter solid letterforms to merge. */}
-            <GooeyText
-              texts={["Karting", "Formula 1", "Vidyuth"]}
-              morphTime={0.95}
-              cooldownTime={0.3}
-              className="h-[clamp(4rem,16vw,9rem)] w-[min(92vw,44rem)]"
-              textClassName="font-block text-ink text-[clamp(3rem,12vw,7rem)]"
-            />
-            <motion.span
-              className="block h-0.5 w-40 origin-left bg-green"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, ease: "easeOut" }}
-              aria-hidden
-            />
-          </motion.div>
+          {/* The V12 emblem forges out of green sparks (a reversed Higgsfield
+              dispersal clip). It only ever plays forward once, holding on the
+              crisp mark; the wipe fires at DISPLAY_MS. */}
+          <video
+            className="size-full object-contain"
+            src="/media/logo-reveal.mp4"
+            poster="/media/logo-reveal-poster.jpg"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+          />
         </motion.div>
       )}
     </AnimatePresence>
