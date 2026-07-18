@@ -76,6 +76,7 @@ export const chapters = [
   { id: "road-to-f1", label: "Road to F1" },
   { id: "gallery", label: "Gallery" },
   { id: "life", label: "Life as a Driver" },
+  { id: "climb", label: "The Climb" },
   { id: "partners", label: "Partners" },
   { id: "contact", label: "Contact" },
 ];

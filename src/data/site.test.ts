@@ -35,10 +35,10 @@ describe("results data", () => {
       expect(p.height).toBeGreaterThan(0);
     });
   });
-  it("has all nine chapters in order", () => {
+  it("has all ten chapters in order", () => {
     expect(chapters.map((c) => c.id)).toEqual([
       "hero", "driver", "stats", "beginnings", "road-to-f1",
-      "gallery", "life", "partners", "contact",
+      "gallery", "life", "climb", "partners", "contact",
     ]);
   });
 });
