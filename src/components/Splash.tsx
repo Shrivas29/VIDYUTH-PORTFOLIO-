@@ -4,6 +4,10 @@ import { animate, AnimatePresence, motion, useMotionValue, useReducedMotion, use
 
 const SESSION_KEY = "v12-splash";
 
+// Inline SVG fractal-noise tile for the filmic grain overlay.
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+
 // How long the splash holds before it wipes away — the loading counter runs
 // 0 -> 100 over ~2.1s, holds a beat on 100, then the curtain lifts. Hero's
 // POST_SPLASH_DELAY is tuned to this so the headline enters just as the wipe
@@ -113,41 +117,59 @@ export function Splash() {
         <motion.div
           data-testid="splash"
           aria-hidden="true"
-          className="fixed inset-0 overflow-hidden bg-ink text-white-soft"
-          style={{ zIndex: "var(--z-splash)" }}
+          className="fixed inset-0 overflow-hidden text-white-soft"
+          style={{
+            zIndex: "var(--z-splash)",
+            // Atmospheric depth: a faint green glow behind the mark over a
+            // navy-to-ink radial, so the field reads lit, not flat.
+            background:
+              "radial-gradient(68% 52% at 50% 42%, rgba(121,232,62,0.13), transparent 60%), radial-gradient(130% 100% at 50% 38%, #0b0b26 0%, #000016 56%, #00000b 100%)",
+          }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
-          transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
         >
-          <div className="flex h-full flex-col justify-between px-6 py-8 md:px-10 md:py-10">
+          {/* Film grain — the biggest lever from flat/digital to filmic. */}
+          <div
+            className="splash-grain pointer-events-none absolute -inset-[15%] opacity-[0.14] mix-blend-overlay"
+            style={{ backgroundImage: GRAIN, backgroundSize: "130px 130px" }}
+            aria-hidden
+          />
+          {/* Cinematic vignette. */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{ background: "radial-gradient(120% 85% at 50% 44%, transparent 52%, rgba(0,0,10,0.72) 100%)" }}
+            aria-hidden
+          />
+
+          <div className="relative flex h-full flex-col justify-between px-6 py-8 md:px-10 md:py-10">
             {/* Top meta row */}
             <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em] text-white-soft/45">
               <span>Vidyuth</span>
-              <span>Nº12</span>
+              <span>Nº12 · Coimbatore</span>
             </div>
 
-            {/* Emblem, revealed with a crisp upward mask wipe */}
+            {/* Emblem with a green halo, revealed by an upward mask wipe */}
             <div className="flex flex-1 items-center justify-center overflow-hidden">
               <motion.img
                 src="/media/v12-mark.svg"
                 alt=""
-                className="w-[min(60vw,340px)]"
-                initial={{ y: "18%", opacity: 0, clipPath: "inset(0 0 100% 0)" }}
+                className="w-[min(66vw,400px)] drop-shadow-[0_0_70px_rgba(121,232,62,0.28)]"
+                initial={{ y: "14%", opacity: 0, clipPath: "inset(0 0 100% 0)" }}
                 animate={{ y: "0%", opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
               />
             </div>
 
-            {/* Loading counter + progress hairline */}
+            {/* Refined loader: small tracked label + counter, thin green rule */}
             <div>
-              <div className="flex items-end justify-between gap-4">
-                <span className="whitespace-nowrap pb-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white-soft/45 md:text-[11px] md:tracking-[0.2em]">
-                  Kart → Formula 1
-                </span>
-                <span className="font-block text-[clamp(2rem,10vw,5.5rem)] leading-none tabular-nums">
-                  {String(count).padStart(3, "0")}
+              <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em]">
+                <span className="text-white-soft/45">Kart → Formula 1</span>
+                <span className="tabular-nums text-white-soft/80">
+                  {String(count).padStart(2, "0")}
+                  <span className="text-white-soft/30"> / 100</span>
                 </span>
               </div>
-              <div className="relative mt-4 h-px w-full overflow-hidden bg-white-soft/15">
+              <div className="relative mt-3 h-px w-full overflow-hidden bg-white-soft/12">
                 <motion.span className="absolute inset-y-0 left-0 bg-green" style={{ width: lineWidth }} />
               </div>
             </div>
