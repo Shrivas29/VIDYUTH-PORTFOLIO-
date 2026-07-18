@@ -102,51 +102,60 @@ export function Hero() {
   useMotionValueEvent(scrollYProgress, "change", (v) => setScrolled(v > 0.03));
 
   return (
-    <section id="hero" ref={sectionRef} className="relative h-[300svh] bg-paper">
-      <div className="sticky top-0 grid h-svh grid-rows-[auto_1fr_auto] overflow-hidden px-5 pb-6 pt-24 md:px-10">
-        {/* Kicker + headline (top) — fixed while the clip scrubs below */}
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <span className="mb-4 inline-block bg-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-ink">
-            Kart → Formula 1
-          </span>
-          <h1 className="font-display text-ink" style={{ fontSize: "clamp(3.2rem, 12vw, 11rem)" }}>
-            {words.map((w, i) =>
-              entrance ? (
-                <motion.span
-                  key={w}
-                  className="inline-block"
-                  initial={{ y: "0.4em", opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: entrance.delayBase + i * STAGGER, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {w}&nbsp;
-                </motion.span>
-              ) : (
-                <span key={w} className="inline-block">
-                  {w}&nbsp;
-                </span>
-              )
-            )}
-          </h1>
-        </div>
-
-        {/* Showcase clip (fills the middle band) */}
-        <motion.div className="relative min-h-0" style={reduced ? undefined : { scale: stageScale }} aria-hidden>
+    <section
+      id="hero"
+      ref={sectionRef}
+      className="relative h-[300svh]"
+      // Matches the clip's studio cyclorama gradient so the object-contain
+      // letterbox blends into one seamless cream field — the car floats.
+      style={{ background: "radial-gradient(125% 95% at 50% 42%, #f2ede5 0%, #e7e0d5 52%, #d1cac0 100%)" }}
+    >
+      <div className="sticky top-0 h-svh overflow-hidden">
+        {/* Full-bleed showcase clip — object-contain over the matching cream
+            field, so the whole car stays visible on every viewport and the
+            studio background reads as one seamless surface with the hero. */}
+        <motion.div className="absolute inset-0" style={reduced ? undefined : { scale: stageScale }} aria-hidden>
           <video
             ref={videoRef}
-            className="absolute inset-0 size-full object-contain"
-            poster="/media/hero-poster.jpg"
+            className="absolute inset-0 size-full object-contain object-[50%_82%]"
+            poster="/media/hero-reveal-poster.jpg"
             muted
             playsInline
             preload="auto"
           >
-            <source src="/media/hero.webm" type="video/webm" />
-            <source src="/media/hero.mp4" type="video/mp4" />
+            <source src="/media/hero-reveal.mp4" type="video/mp4" />
           </video>
         </motion.div>
 
-        {/* FIG label + KARTING→FORMULA 1 progress rail (bottom) */}
-        <div className="relative z-10 flex items-end justify-between gap-6">
+        <div className="relative z-10 flex h-full flex-col justify-between px-5 pb-6 pt-24 md:px-10">
+          {/* Kicker + headline (top) — fixed while the clip scrubs kart→F1 below */}
+          <div className="flex flex-col items-center text-center">
+            <span className="mb-4 inline-block bg-green px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-ink">
+              Kart → Formula 1
+            </span>
+            <h1 className="font-display text-ink" style={{ fontSize: "clamp(2.6rem, 7.5vw, 7rem)" }}>
+              {words.map((w, i) =>
+                entrance ? (
+                  <motion.span
+                    key={w}
+                    className="inline-block"
+                    initial={{ y: "0.4em", opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: entrance.delayBase + i * STAGGER, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {w}&nbsp;
+                  </motion.span>
+                ) : (
+                  <span key={w} className="inline-block">
+                    {w}&nbsp;
+                  </span>
+                )
+              )}
+            </h1>
+          </div>
+
+          {/* FIG label + KARTING→FORMULA 1 progress rail (bottom) */}
+          <div className="flex items-end justify-between gap-6">
           <span className="font-block text-[11px] tracking-[0.02em] text-ink/60">Fig 01 — Nº 12</span>
           <div className="flex-1 pb-1">
             <div className="mx-auto flex max-w-md items-center justify-between text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink/70">
@@ -168,6 +177,7 @@ export function Hero() {
           >
             Scroll to reveal
           </span>
+          </div>
         </div>
       </div>
     </section>
