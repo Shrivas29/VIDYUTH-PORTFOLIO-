@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { animate, AnimatePresence, motion, useMotionValue, useReducedMotion, useTransform } from "motion/react";
+import { TextGlitch } from "@/components/TextGlitch";
 
 const SESSION_KEY = "v12-splash";
 
@@ -143,27 +144,28 @@ export function Splash() {
 
           <div className="relative flex h-full flex-col justify-between px-6 py-8 md:px-10 md:py-10">
             {/* Top meta row */}
-            <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em] text-white-soft/45">
-              <span>Vidyuth</span>
-              <span>Nº12 · Coimbatore</span>
+            <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-white-soft/45 md:text-[11px] md:tracking-[0.2em]">
+              <span>
+                Nº12<span className="hidden sm:inline"> · Coimbatore</span>
+              </span>
+              <span>Kart → Formula 1</span>
             </div>
 
-            {/* Emblem with a green halo, revealed by an upward mask wipe */}
-            <div className="flex flex-1 items-center justify-center overflow-hidden">
-              <motion.img
-                src="/media/v12-mark.svg"
-                alt=""
-                className="w-[min(66vw,400px)] drop-shadow-[0_0_70px_rgba(121,232,62,0.28)]"
-                initial={{ y: "14%", opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-                animate={{ y: "0%", opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-                transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+            {/* Name, decoding into place with a green highlight sweep */}
+            <div className="flex flex-1 items-center">
+              <TextGlitch
+                text="VIDYUTH"
+                hoverText="VIDYUTH"
+                autoPlay
+                delay={0.15}
+                className="text-[13vw] md:text-[11vw]"
               />
             </div>
 
             {/* Refined loader: small tracked label + counter, thin green rule */}
             <div>
               <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.2em]">
-                <span className="text-white-soft/45">Kart → Formula 1</span>
+                <span className="text-white-soft/45">Loading</span>
                 <span className="tabular-nums text-white-soft/80">
                   {String(count).padStart(2, "0")}
                   <span className="text-white-soft/30"> / 100</span>
