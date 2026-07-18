@@ -1,9 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { display, body } from "./fonts";
+import { panchang } from "./fonts";
 
 describe("fonts", () => {
-  it("exposes CSS variables for both families", () => {
-    expect(display.variable).toBe("--font-display");
-    expect(body.variable).toBe("--font-body");
+  it("exposes the Panchang variable-font CSS variable", () => {
+    expect(panchang.variable).toBe("--font-panchang");
   });
 });

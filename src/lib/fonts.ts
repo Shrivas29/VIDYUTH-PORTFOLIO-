@@ -1,26 +1,12 @@
 import localFont from "next/font/local";
-import { Manrope } from "next/font/google";
 
-// Pencerio Hairline (Fontshare / Indian Type Foundry) — the display voice:
-// every expressive headline. Hand-drawn script, single hairline weight.
-export const display = localFont({
-  src: "../fonts/Pencerio-Hairline.woff2",
-  weight: "50",
-  variable: "--font-display",
-  display: "swap",
-});
-
-// Tanker — the block voice: numerals, marks, and data labels, where a
-// hairline script stops being legible (race results, the VD mark).
-export const block = localFont({
-  src: "../fonts/Tanker-Regular.woff2",
-  weight: "400",
-  variable: "--font-block",
-  display: "swap",
-});
-
-export const body = Manrope({
-  subsets: ["latin"],
-  variable: "--font-body",
+// Panchang (Fontshare / Indian Type Foundry) — one variable face, weights
+// 200–800, drives the whole site. The three voices (display headlines, the
+// block/data mark, and body) are the same family differentiated by weight
+// in globals.css, so it ships as a single ~37KB woff2.
+export const panchang = localFont({
+  src: "../fonts/Panchang-Variable.woff2",
+  weight: "200 800",
+  variable: "--font-panchang",
   display: "swap",
 });

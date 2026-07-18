@@ -5,8 +5,9 @@
   --color-paper: oklch(0.96 0 0);
   --color-green: oklch(0.85 0.25 135);
   --color-white-soft: oklch(0.95 0 0);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
+  --font-display: var(--font-panchang);
+  --font-body: var(--font-panchang);
+  --font-block: var(--font-panchang);
 }
 
 :root {
@@ -55,16 +56,19 @@ body {
   font-weight: 500;
 }
 
-/* Pencerio is a hand-drawn script: no all-caps (script caps don't join),
-   and extra line-height so hairline ascenders/descenders never clip. */
+/* Panchang display voice: headlines. Medium weight reads clean and
+   characterful at the large clamp sizes. */
 .font-display {
-  font-family: var(--font-display), cursive;
+  font-family: var(--font-panchang), sans-serif;
+  font-weight: 500;
   line-height: 1.05;
 }
 
-/* Tanker: the block voice for numerals, marks, and data labels. */
+/* Panchang block voice: numerals, marks, and data labels — bold and set
+   uppercase, tight leading, as the heavy counterpart to the display type. */
 .font-block {
-  font-family: var(--font-block), sans-serif;
+  font-family: var(--font-panchang), sans-serif;
+  font-weight: 700;
   text-transform: uppercase;
   line-height: 0.88;
 }

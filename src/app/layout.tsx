@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { display, block, body } from "@/lib/fonts";
+import { panchang } from "@/lib/fonts";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Splash } from "@/components/Splash";
 import { Header } from "@/components/Header";
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${display.variable} ${block.variable} ${body.variable}`}
+      className={panchang.variable}
       // The boot script sets data-splash-skip on <html> before hydration;
       // suppress the expected attribute-mismatch warning for this element.
       suppressHydrationWarning

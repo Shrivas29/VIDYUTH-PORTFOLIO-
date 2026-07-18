@@ -19,6 +19,12 @@ const RAMP = " .:-=+*#%@"; // charSet: "standard", light -> dense
 const CELL = 10; // cellSize
 const LEVELS = 24;
 const FPS = 30;
+// Render the whole effect into a buffer this fraction of the display size,
+// then let the canvas scale it up. Every per-frame cost (pixel reads, the
+// per-cell glyph draws, the full-canvas chromatic passes) drops with the
+// square of this, which is what pulls the hero back to 60fps. The effect
+// exists to mask the footage's resolution, so the softer upscale is on-brief.
+const RES = 0.7;
 const SHIMMER_SPEED = 1; // animSpeed 100
 const SHIMMER_DEPTH = 0.6; // animIntensity 60
 const CHROMATIC = 0.2; // pfx.chromatic 20
@@ -77,8 +83,8 @@ export function AsciiVideo({ videoRef }: { videoRef: RefObject<HTMLVideoElement 
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      w = Math.max(1, Math.round(rect.width));
-      h = Math.max(1, Math.round(rect.height));
+      w = Math.max(1, Math.round(rect.width * RES));
+      h = Math.max(1, Math.round(rect.height * RES));
       canvas.width = w;
       canvas.height = h;
       glyphs.width = w;

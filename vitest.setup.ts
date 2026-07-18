@@ -5,8 +5,9 @@ vi.mock("next/font/google", () => ({
   Manrope: () => ({ variable: "--font-body" }),
 }));
 
+// Echo back the requested CSS variable so tests assert the real wiring.
 vi.mock("next/font/local", () => ({
-  default: () => ({ variable: "--font-display" }),
+  default: (opts: { variable?: string }) => ({ variable: opts?.variable ?? "--font-local" }),
 }));
 
 // jsdom ships neither observer; framer-motion needs them for
