@@ -123,7 +123,11 @@ export function Hero() {
         <motion.div className="absolute inset-0" style={reduced ? undefined : { scale: stageScale }} aria-hidden>
           <video
             ref={videoRef}
-            className="absolute inset-0 size-full object-contain object-[50%_82%]"
+            // Mobile: a width-locked 16:9 band whose top and bottom edges are
+            // feathered into the cream field, so the kart floats instead of
+            // sitting in a visible rectangle. Desktop (md+): the original
+            // full-bleed object-contain with no mask — layout unchanged.
+            className="absolute inset-x-0 bottom-[11%] h-[56.25vw] w-full object-cover object-center [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,#000_18%,#000_82%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,#000_18%,#000_82%,transparent_100%)] md:inset-0 md:bottom-0 md:h-full md:object-contain md:object-[50%_82%] md:[-webkit-mask-image:none] md:[mask-image:none]"
             poster="/media/hero-reveal-poster.jpg"
             muted
             playsInline
