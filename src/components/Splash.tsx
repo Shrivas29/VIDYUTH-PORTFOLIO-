@@ -121,10 +121,9 @@ export function Splash() {
           className="fixed inset-0 overflow-hidden text-white-soft"
           style={{
             zIndex: "var(--z-splash)",
-            // Atmospheric depth: a faint green glow behind the mark over a
-            // navy-to-ink radial, so the field reads lit, not flat.
-            background:
-              "radial-gradient(68% 52% at 50% 42%, rgba(121,232,62,0.13), transparent 60%), radial-gradient(130% 100% at 50% 38%, #0b0b26 0%, #000016 56%, #00000b 100%)",
+            // Neutral atmospheric depth (navy to ink) so the electric-yellow
+            // highlight is the only accent.
+            background: "radial-gradient(130% 100% at 50% 40%, #10122b 0%, #000016 56%, #00000b 100%)",
           }}
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
@@ -151,15 +150,11 @@ export function Splash() {
               <span>Kart → Formula 1</span>
             </div>
 
-            {/* Name, decoding into place with a green highlight sweep */}
-            <div className="flex flex-1 items-center">
-              <TextGlitch
-                text="VIDYUTH"
-                hoverText="VIDYUTH"
-                autoPlay
-                delay={0.15}
-                className="text-[13vw] md:text-[11vw]"
-              />
+            {/* Name, decoding into place behind a yellow highlight sweep — two
+                stacked lines, staggered. */}
+            <div className="flex flex-1 flex-col items-start justify-center gap-1 md:gap-2">
+              <TextGlitch text="VIDYUTH" hoverText="VIDYUTH" autoPlay delay={0.15} className="text-[13vw] md:text-[10.5vw]" />
+              <TextGlitch text="RACING" hoverText="RACING" autoPlay delay={0.3} className="text-[13vw] md:text-[10.5vw]" />
             </div>
 
             {/* Refined loader: small tracked label + counter, thin green rule */}
@@ -172,7 +167,7 @@ export function Splash() {
                 </span>
               </div>
               <div className="relative mt-3 h-px w-full overflow-hidden bg-white-soft/12">
-                <motion.span className="absolute inset-y-0 left-0 bg-green" style={{ width: lineWidth }} />
+                <motion.span className="absolute inset-y-0 left-0" style={{ width: lineWidth, backgroundColor: "#FFFF02" }} />
               </div>
             </div>
           </div>

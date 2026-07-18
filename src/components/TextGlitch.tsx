@@ -99,7 +99,7 @@ export function TextGlitch({ text, hoverText, href, className = "", delay = 0, a
       ref={textRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`relative m-0 flex flex-col items-start justify-center overflow-hidden border-b border-white-soft/15 bg-gradient-to-r from-white-soft to-green bg-clip-text bg-no-repeat font-block leading-none tracking-tight text-white-soft/15 ${className}`}
+      className={`relative m-0 flex flex-col items-start justify-center overflow-hidden border-b border-white-soft/15 bg-gradient-to-r from-white-soft/40 to-white-soft bg-clip-text bg-no-repeat font-block leading-none tracking-tight text-white-soft/15 ${className}`}
       style={{
         backgroundSize: "0%",
         WebkitBackgroundClip: "text",
@@ -116,7 +116,7 @@ export function TextGlitch({ text, hoverText, href, className = "", delay = 0, a
         style={{
           clipPath: "polygon(0 50%, 100% 50%, 100% 50%, 0 50%)",
           transformOrigin: "center",
-          backgroundColor: "var(--color-green)",
+          backgroundColor: "#FFFF02",
           whiteSpace: "nowrap",
         }}
       >
