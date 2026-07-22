@@ -1,9 +1,10 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
+import { useBest } from "@/lib/useBest";
 import { SectionMarker } from "@/components/SectionMarker";
 import { reactionBenchmarkMs } from "@/data/site";
-import { formatSeconds, judgeReaction, readBest, writeBestIfBetter } from "@/lib/reaction";
+import { formatSeconds, judgeReaction } from "@/lib/reaction";
 
 type Phase = "idle" | "arming" | "set" | "go" | "result" | "jumpstart";
 
@@ -32,12 +33,10 @@ export function Reaction() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [lit, setLit] = useState(0);
   const [timeMs, setTimeMs] = useState<number | null>(null);
-  const [best, setBest] = useState<number | null>(null);
+  const { best, commit } = useBest();
 
   const timers = useRef<number[]>([]);
   const goAt = useRef(0);
-
-  useEffect(() => setBest(readBest()), []);
 
   const clearTimers = useCallback(() => {
     timers.current.forEach((id) => clearTimeout(id));
@@ -81,9 +80,9 @@ export function Reaction() {
     clearTimers();
     setTimeMs(ms);
     const verdict = judgeReaction(ms, reactionBenchmarkMs);
-    if (!verdict.tooQuick) setBest(writeBestIfBetter(ms));
+    if (!verdict.tooQuick) commit(ms);
     setPhase("result");
-  }, [phase, arm, clearTimers]);
+  }, [phase, arm, clearTimers, commit]);
 
   const verdict = timeMs !== null ? judgeReaction(timeMs, reactionBenchmarkMs) : null;
   const status =
