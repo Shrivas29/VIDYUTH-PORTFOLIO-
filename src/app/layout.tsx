@@ -4,7 +4,6 @@ import { panchang } from "@/lib/fonts";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Splash } from "@/components/Splash";
 import { Header } from "@/components/Header";
-import { PartnerChip } from "@/components/PartnerChip";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SideNav } from "@/components/SideNav";
 import { CursorHint } from "@/components/CursorHint";
@@ -14,17 +13,35 @@ import { contactEmail, socials } from "@/data/site";
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vidyuthracing.com";
-const TITLE = "Vidyuth #12 — Karting Driver";
+const TITLE = "Vidyuth Nº12 — Karting Driver Racing Toward Formula 1";
 const DESCRIPTION =
-  "Official site of Vidyuth, 11-year-old karting driver racing toward Formula 1. 3 podiums. Race number 12.";
+  "Official site of Vidyuth, 12-year-old karting driver from Coimbatore racing toward Formula 1. 3 podiums, best finish P2. Race number 12.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: TITLE,
+  title: { default: TITLE, template: "%s — Vidyuth Nº12" },
   description: DESCRIPTION,
+  applicationName: "Vidyuth Nº12",
+  authors: [{ name: "Vidyuth" }],
+  creator: "Vidyuth Racing",
+  keywords: [
+    "Vidyuth",
+    "Vidyuth Racing",
+    "karting driver",
+    "kart racing India",
+    "IAME Series India",
+    "junior karting",
+    "Formula 1",
+    "Coimbatore karting",
+    "young racing driver",
+    "Nº12",
+  ],
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
   openGraph: {
     type: "website",
     siteName: "Vidyuth Nº12",
+    locale: "en_US",
     title: TITLE,
     description: DESCRIPTION,
     url: SITE_URL,
@@ -36,6 +53,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: ["/og.png"],
   },
+  category: "sports",
 };
 
 export const viewport: Viewport = {
@@ -47,13 +65,16 @@ const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Vidyuth",
+  alternateName: "Vidyuth Nº12",
   jobTitle: "Karting Driver",
   description: DESCRIPTION,
   url: SITE_URL,
   image: `${SITE_URL}/og.png`,
   email: `mailto:${contactEmail}`,
+  nationality: "Indian",
+  homeLocation: { "@type": "Place", name: "Coimbatore, India" },
   sameAs: socials.map((s) => s.href),
-  knowsAbout: ["Karting", "Motorsport", "Formula 1"],
+  knowsAbout: ["Karting", "Motorsport", "Formula 1", "IAME Series India"],
 };
 
 // Runs before the body paints: if the splash is not going to play (already
@@ -93,7 +114,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SideNav />
           {children}
           <ChapterTransition />
-          <PartnerChip />
           <CursorHint />
         </SmoothScroll>
       </body>

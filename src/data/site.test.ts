@@ -16,7 +16,7 @@ describe("results data", () => {
     iame.forEach((r) => expect(r.category).toBe("IAME (in category)"));
   });
   it("driver facts match client-confirmed data", () => {
-    expect(driver.age).toBe(11);
+    expect(driver.age).toBe(12);
     expect(driver.number).toBe(12);
     expect(driver.name).toBe("Vidyuth");
   });
@@ -35,10 +35,10 @@ describe("results data", () => {
       expect(p.height).toBeGreaterThan(0);
     });
   });
-  it("has all ten chapters in order", () => {
+  it("has all nine chapters in order", () => {
     expect(chapters.map((c) => c.id)).toEqual([
       "hero", "driver", "stats", "beginnings", "road-to-f1",
-      "gallery", "highlight", "life", "partners", "contact",
+      "gallery", "highlight", "life", "contact",
     ]);
   });
 });

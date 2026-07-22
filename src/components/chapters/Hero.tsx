@@ -61,6 +61,17 @@ export function Hero() {
     offset: ["start start", "end end"],
   });
 
+  // Serve a small 640x360 clip on phones — a 720p clip is far heavier to seek
+  // on a mobile decoder, which is what makes the scrub feel laggy. SSR/first
+  // paint use the desktop src; the layout effect swaps in the mobile one
+  // before paint on small screens.
+  const [videoSrc, setVideoSrc] = useState("/media/hero-reveal.mp4");
+  useIsoLayoutEffect(() => {
+    if (window.matchMedia("(max-width: 767px)").matches) {
+      setVideoSrc("/media/hero-reveal-mobile.mp4");
+    }
+  }, []);
+
   // Scrub the showcase clip: ease currentTime toward scroll progress each
   // frame. Never played — only seeked — so it holds wherever the scroll rests.
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -123,13 +134,13 @@ export function Hero() {
             // feathered into the cream field, so the kart floats instead of
             // sitting in a visible rectangle. Desktop (md+): the original
             // full-bleed object-contain with no mask — layout unchanged.
-            className="absolute inset-x-0 bottom-[11%] h-[56.25vw] w-full object-cover object-center [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,#000_18%,#000_82%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,#000_18%,#000_82%,transparent_100%)] md:inset-0 md:bottom-0 md:h-full md:object-contain md:object-[50%_82%] md:[-webkit-mask-image:none] md:[mask-image:none]"
+            className="absolute inset-x-0 top-[34%] h-[56.25vw] w-full object-cover object-center [-webkit-mask-image:linear-gradient(to_bottom,transparent_0%,#000_18%,#000_82%,transparent_100%)] [mask-image:linear-gradient(to_bottom,transparent_0%,#000_18%,#000_82%,transparent_100%)] md:inset-0 md:top-0 md:h-full md:object-contain md:object-[50%_82%] md:[-webkit-mask-image:none] md:[mask-image:none]"
             poster="/media/hero-reveal-poster.jpg"
             muted
             playsInline
             preload="auto"
           >
-            <source src="/media/hero-reveal.mp4" type="video/mp4" />
+            <source src={videoSrc} type="video/mp4" />
           </video>
         </motion.div>
 

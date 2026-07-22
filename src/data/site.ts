@@ -6,11 +6,11 @@ export type RaceResult = {
 
 export const driver = {
   name: "Vidyuth",
-  age: 11,
+  age: 12,
   number: 12 as const,
   headline: "Born to race",
   intro:
-    "Eleven years old. Three podiums. One goal: Formula 1. Vidyuth races karts the way the greats started, and he is only getting faster.",
+    "Twelve years old. Three podiums. One goal: Formula 1. Vidyuth races karts the way the greats started, and he is only getting faster.",
   bio: [
     "Vidyuth climbed into a kart before most kids pick a sport, and the stopwatch settled it. Within his first seasons he was standing on podiums in 4-stroke competition and holding his own in the IAME series.",
     "Racing number 12. Green helmet. A family that travels to every circuit. The plan runs from karting through junior single-seaters, all the way to Formula 1.",
@@ -56,9 +56,9 @@ export const creed = "Anything can be achieved if you just work hard enough.";
 // round and the countdown recalculates automatically. If the date is in the
 // past the strip shows "Race weekend is here".
 export const nextRace = {
-  event: "IAME Series India — Round 3",
-  venue: "Kari Motor Speedway, Coimbatore",
-  date: "2026-09-13T09:00:00+05:30",
+  event: "IAME Series India · Rounds 3 & 4",
+  venue: "Kari Motor Speedway · 1–2 August",
+  date: "2026-08-01T09:00:00+05:30",
 };
 
 export const contactEmail = "vidyuthracing@gmail.com";
@@ -95,6 +95,5 @@ export const chapters = [
   { id: "gallery", label: "Gallery" },
   { id: "highlight", label: "Onboard" },
   { id: "life", label: "Life as a Driver" },
-  { id: "partners", label: "Partners" },
   { id: "contact", label: "Contact" },
 ];
