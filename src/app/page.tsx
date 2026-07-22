@@ -6,6 +6,7 @@ import { Beginnings } from "@/components/chapters/Beginnings";
 import { RoadToF1 } from "@/components/chapters/RoadToF1";
 import { Gallery } from "@/components/chapters/Gallery";
 import { Highlight } from "@/components/chapters/Highlight";
+import { Reaction } from "@/components/chapters/Reaction";
 import { Life } from "@/components/chapters/Life";
 import { Creed } from "@/components/chapters/Creed";
 import { Footer } from "@/components/Footer";
@@ -21,6 +22,7 @@ export default function Home() {
       <RoadToF1 />
       <Gallery />
       <Highlight />
+      <Reaction />
       <Life />
       <Creed />
       <Footer />
