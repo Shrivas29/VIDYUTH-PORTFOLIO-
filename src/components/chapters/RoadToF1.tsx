@@ -47,7 +47,7 @@ export function RoadToF1() {
           Road to F1
         </RevealHeading>
 
-        <div className="mt-16 grid grid-cols-[44px_1fr] gap-4 md:grid-cols-[64px_1fr] md:gap-8">
+        <div className="mt-16 grid grid-cols-[44px_minmax(0,1fr)] gap-4 md:grid-cols-[64px_minmax(0,1fr)] md:gap-8">
           {/* Rail */}
           <div className="relative">
             <svg
@@ -99,11 +99,11 @@ export function RoadToF1() {
           </div>
 
           {/* Stages */}
-          <ol className="flex flex-col">
+          <ol className="flex min-w-0 flex-col">
             {roadToF1.map((stage, i) => (
               <motion.li
                 key={stage.stage}
-                className="grid gap-3 border-t border-white-soft/20 py-8 first:border-t-0 md:grid-cols-[1fr_1fr] md:gap-8"
+                className="grid gap-3 border-t border-white-soft/20 py-8 first:border-t-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-8"
                 initial={false}
                 whileInView={reduced ? undefined : { opacity: [0, 1], x: [36, 0], y: [20, 0] }}
                 viewport={{ once: true, margin: "-15%" }}
