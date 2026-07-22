@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { results, derivedStats, driver, chapters, socials, gallery } from "./site";
+import { results, derivedStats, driver, chapters, socials, gallery, darkChapters, reactionBenchmarkMs } from "./site";
 
 describe("results data", () => {
   it("contains exactly the five confirmed races", () => {
@@ -35,10 +35,27 @@ describe("results data", () => {
       expect(p.height).toBeGreaterThan(0);
     });
   });
-  it("has all nine chapters in order", () => {
+  it("has all ten chapters in order", () => {
     expect(chapters.map((c) => c.id)).toEqual([
       "hero", "driver", "stats", "beginnings", "road-to-f1",
-      "gallery", "highlight", "life", "contact",
+      "gallery", "highlight", "reaction", "life", "contact",
     ]);
+  });
+});
+
+describe("reaction registration", () => {
+  it("exposes a positive benchmark in milliseconds", () => {
+    expect(reactionBenchmarkMs).toBe(180);
+  });
+
+  it("registers the reaction chapter between highlight and life", () => {
+    const ids = chapters.map((c) => c.id);
+    expect(ids).toContain("reaction");
+    expect(ids.indexOf("reaction")).toBe(ids.indexOf("highlight") + 1);
+    expect(ids.indexOf("life")).toBe(ids.indexOf("reaction") + 1);
+  });
+
+  it("marks the reaction chapter as a dark (ink) section", () => {
+    expect(darkChapters.has("reaction")).toBe(true);
   });
 });

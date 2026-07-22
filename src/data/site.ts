@@ -63,6 +63,9 @@ export const nextRace = {
 
 export const contactEmail = "vidyuthracing@gmail.com";
 
+// Reaction-game benchmark: Vidyuth's start-lights reaction, in milliseconds.
+export const reactionBenchmarkMs = 180;
+
 export const socials: { label: string; href: string }[] = [
   { label: "Instagram", href: "https://www.instagram.com/vidyuthracing/" },
 ];
@@ -84,7 +87,7 @@ export const gallery: GalleryPhoto[] = [
 ];
 
 // Chapters painted on ink — fixed chrome (header, side nav) flips to light over these.
-export const darkChapters = new Set(["road-to-f1", "highlight", "life", "contact"]);
+export const darkChapters = new Set(["road-to-f1", "highlight", "reaction", "life", "contact"]);
 
 export const chapters = [
   { id: "hero", label: "Start" },
@@ -94,6 +97,7 @@ export const chapters = [
   { id: "road-to-f1", label: "Road to F1" },
   { id: "gallery", label: "Gallery" },
   { id: "highlight", label: "Onboard" },
+  { id: "reaction", label: "Reaction" },
   { id: "life", label: "Life as a Driver" },
   { id: "contact", label: "Contact" },
 ];
