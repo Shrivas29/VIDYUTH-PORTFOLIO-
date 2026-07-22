@@ -103,14 +103,14 @@ export function RoadToF1() {
             {roadToF1.map((stage, i) => (
               <motion.li
                 key={stage.stage}
-                className="grid gap-3 border-t border-white-soft/20 py-8 first:border-t-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-8"
+                className="grid grid-cols-1 gap-3 border-t border-white-soft/20 py-8 first:border-t-0 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-8"
                 initial={false}
                 whileInView={reduced ? undefined : { opacity: [0, 1], x: [36, 0], y: [20, 0] }}
                 viewport={{ once: true, margin: "-15%" }}
                 transition={{ delay: i * 0.1, duration: 0.6, ease }}
               >
                 <div className="flex flex-wrap items-center gap-4">
-                  <h3 className={`font-block text-[clamp(1.8rem,4vw,2.5rem)] ${stage.current ? "text-green" : ""}`}>
+                  <h3 className={`font-block text-[clamp(1.5rem,4vw,2.5rem)] ${stage.current ? "text-green" : ""}`}>
                     {stage.stage}
                   </h3>
                   {stage.current && (
