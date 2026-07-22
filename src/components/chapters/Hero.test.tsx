@@ -76,6 +76,51 @@ describe("Hero SSR / first paint", () => {
   });
 });
 
+describe("Hero mobile playback", () => {
+  afterEach(() => {
+    cleanup();
+    // Restore the default (no-match) matchMedia from vitest.setup.
+    window.matchMedia = ((q: string) => ({
+      matches: false,
+      media: q,
+      addEventListener() {},
+      removeEventListener() {},
+      addListener() {},
+      removeListener() {},
+      onchange: null,
+      dispatchEvent: () => false,
+    })) as unknown as typeof window.matchMedia;
+  });
+
+  it("plays the clip linearly (autoplay + loop, mobile src) on phones instead of scrubbing", () => {
+    // Match the mobile width query but NOT the reduced-motion query, so the
+    // mobile branch engages while motion stays enabled.
+    window.matchMedia = ((q: string) => ({
+      matches: /max-width/.test(q),
+      media: q,
+      addEventListener() {},
+      removeEventListener() {},
+      addListener() {},
+      removeListener() {},
+      onchange: null,
+      dispatchEvent: () => false,
+    })) as unknown as typeof window.matchMedia;
+
+    const { container } = render(<Hero />);
+    const video = container.querySelector("video");
+    expect(video).toHaveAttribute("autoplay");
+    expect(video).toHaveAttribute("loop");
+    expect(video?.querySelector("source")?.getAttribute("src")).toBe("/media/hero-reveal-mobile.mp4");
+  });
+
+  it("does not autoplay on desktop (the clip is scroll-scrubbed there)", () => {
+    const { container } = render(<Hero />);
+    const video = container.querySelector("video");
+    expect(video).not.toHaveAttribute("autoplay");
+    expect(video).not.toHaveAttribute("loop");
+  });
+});
+
 describe("headlineDelayBase", () => {
   it("returns the 2.7s post-splash delay when the splash was shown this load", () => {
     expect(headlineDelayBase(true)).toBe(2.7);

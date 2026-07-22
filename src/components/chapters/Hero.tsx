@@ -61,23 +61,37 @@ export function Hero() {
     offset: ["start start", "end end"],
   });
 
-  // Serve a small 640x360 clip on phones — a 720p clip is far heavier to seek
-  // on a mobile decoder, which is what makes the scrub feel laggy. SSR/first
-  // paint use the desktop src; the layout effect swaps in the mobile one
-  // before paint on small screens.
+  // Phones get a smaller 640x360 clip and, more importantly, play it linearly
+  // instead of scrubbing: mobile hardware decoders are built for playback, not
+  // per-frame random-access seeking, so seeking `currentTime` on every scroll
+  // frame stalls the decoder and the clip lags behind the scroll. SSR/first
+  // paint use the desktop scrub path; the layout effect swaps in the mobile
+  // src and the linear-playback branch before paint on small screens.
   const [videoSrc, setVideoSrc] = useState("/media/hero-reveal.mp4");
+  const [isMobile, setIsMobile] = useState(false);
   useIsoLayoutEffect(() => {
     if (window.matchMedia("(max-width: 767px)").matches) {
       setVideoSrc("/media/hero-reveal-mobile.mp4");
+      setIsMobile(true);
     }
   }, []);
 
-  // Scrub the showcase clip: ease currentTime toward scroll progress each
-  // frame. Never played — only seeked — so it holds wherever the scroll rests.
+  // Desktop scrubs the clip by easing `currentTime` toward scroll progress each
+  // frame (never played, only seeked, so it holds wherever the scroll rests).
+  // Mobile plays it linearly on a loop — smooth on a phone decoder, and it
+  // sidesteps the seek stalls entirely.
   const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const video = videoRef.current;
     if (!video || reduced) return;
+    if (isMobile) {
+      // `play()` returns a promise in modern browsers; guard it for older ones
+      // (and jsdom) that return undefined.
+      video.play()?.catch(() => {
+        /* autoplay may be blocked until interaction; poster holds meanwhile */
+      });
+      return;
+    }
     let raf = 0;
     const loop = () => {
       raf = requestAnimationFrame(loop);
@@ -97,7 +111,7 @@ export function Hero() {
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [reduced, scrollYProgress]);
+  }, [reduced, isMobile, scrollYProgress]);
 
   // Overlay motion — every value sits at its rest state at scroll 0, so SSR
   // and first paint agree and no inline `opacity:0` is ever emitted (the
@@ -118,7 +132,10 @@ export function Hero() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative h-[300svh]"
+      // Mobile: a single viewport with the clip playing linearly — no tall
+      // pinned scrub, so no three screens of cramped dead scroll. Desktop
+      // keeps the 300svh scroll-scrub reveal.
+      className="relative h-svh md:h-[300svh]"
       // Matches the clip's studio cyclorama gradient so the object-contain
       // letterbox blends into one seamless cream field — the car floats.
       style={{ background: "radial-gradient(125% 95% at 50% 42%, #f2ede5 0%, #e7e0d5 52%, #d1cac0 100%)" }}
@@ -139,6 +156,10 @@ export function Hero() {
             muted
             playsInline
             preload="auto"
+            // Mobile plays the clip through on a loop; desktop only ever seeks
+            // it, so it must not autoplay there. Reduced motion holds the poster.
+            autoPlay={isMobile && !reduced}
+            loop={isMobile && !reduced}
           >
             <source src={videoSrc} type="video/mp4" />
           </video>
@@ -171,8 +192,10 @@ export function Hero() {
             </h1>
           </div>
 
-          {/* FIG label + KARTING→FORMULA 1 progress rail (bottom) */}
-          <div className="flex items-end justify-between gap-6">
+          {/* FIG label + KARTING→FORMULA 1 progress rail (bottom). The rail
+              tracks the scroll-scrub, which mobile no longer runs, so it (and
+              the fig caption) are desktop-only — keeps the phone hero clean. */}
+          <div className="hidden items-end justify-between gap-6 md:flex">
           <span className="font-block text-[11px] tracking-[0.02em] text-ink/60">Fig 01 — Nº 12</span>
           <div className="flex-1 pb-1">
             <div className="mx-auto flex max-w-md items-center justify-between text-[10px] font-extrabold uppercase tracking-[0.14em] text-ink/70">
