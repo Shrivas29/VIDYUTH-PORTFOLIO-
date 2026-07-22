@@ -102,7 +102,7 @@ export function Splash() {
         >
           <div className="relative flex h-full flex-col justify-between px-6 py-8 md:px-10 md:py-10">
             {/* Top meta row */}
-            <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-white-soft/45 md:text-[11px] md:tracking-[0.2em]">
+            <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-white-soft/70 md:text-[11px] md:tracking-[0.2em]">
               <span>
                 Nº12<span className="hidden sm:inline"> · Coimbatore</span>
               </span>

@@ -8,7 +8,7 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 import { SideNav } from "@/components/SideNav";
 import { CursorHint } from "@/components/CursorHint";
 import { ChapterTransition } from "@/components/ChapterTransition";
-import { contactEmail, socials } from "@/data/site";
+import { contactEmail, socials, driver, nextRace, results, derivedStats } from "@/data/site";
 
 const PLAUSIBLE_DOMAIN = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
@@ -60,10 +60,14 @@ export const viewport: Viewport = {
   themeColor: "#000016",
 };
 
-// Athlete structured data — helps search + rich results understand the page.
-const JSON_LD = {
-  "@context": "https://schema.org",
+// Structured data as a single @graph: the athlete, his next race, and an FAQ.
+// Together these give search engines the entities behind the page and open the
+// door to rich results (event listings, FAQ snippets).
+const stats = derivedStats(results);
+
+const PERSON = {
   "@type": "Person",
+  "@id": `${SITE_URL}/#vidyuth`,
   name: "Vidyuth",
   alternateName: "Vidyuth Nº12",
   jobTitle: "Karting Driver",
@@ -75,6 +79,66 @@ const JSON_LD = {
   homeLocation: { "@type": "Place", name: "Coimbatore, India" },
   sameAs: socials.map((s) => s.href),
   knowsAbout: ["Karting", "Motorsport", "Formula 1", "IAME Series India"],
+};
+
+const NEXT_RACE_EVENT = {
+  "@type": "SportsEvent",
+  name: nextRace.event,
+  sport: "Kart racing",
+  startDate: nextRace.date,
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  location: { "@type": "Place", name: nextRace.venue, address: "Coimbatore, India" },
+  performer: { "@id": `${SITE_URL}/#vidyuth` },
+  url: SITE_URL,
+};
+
+const FAQ = {
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How old is Vidyuth and what number does he race?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `Vidyuth is ${driver.age} and races kart number ${driver.number}.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What does Vidyuth race?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "4-stroke karting and the IAME Series India, on the ladder toward Formula 1.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What are Vidyuth's results so far?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `${stats.podiums} podiums across ${stats.events} events, best finish P${stats.bestFinish}.`,
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Where is Vidyuth based?",
+      acceptedAnswer: { "@type": "Answer", text: "Coimbatore, India." },
+    },
+    {
+      "@type": "Question",
+      name: "How can I sponsor or partner with Vidyuth?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: `Reach the team at ${contactEmail} to talk sponsorship and partnerships.`,
+      },
+    },
+  ],
+};
+
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@graph": [PERSON, NEXT_RACE_EVENT, FAQ],
 };
 
 // Runs before the body paints: if the splash is not going to play (already

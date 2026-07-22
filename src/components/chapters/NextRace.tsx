@@ -21,7 +21,7 @@ function Unit({ value, label }: { value: number | null; label: string }) {
       <span className="font-block text-[clamp(2rem,6vw,3.5rem)] tabular-nums text-white-soft">
         {value === null ? "--" : String(value).padStart(2, "0")}
       </span>
-      <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white-soft/50">{label}</span>
+      <span className="mt-1 text-[10px] font-bold uppercase tracking-[0.14em] text-white-soft/70">{label}</span>
     </div>
   );
 }

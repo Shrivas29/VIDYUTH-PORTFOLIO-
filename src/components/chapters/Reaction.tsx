@@ -111,9 +111,10 @@ export function Reaction() {
           data-testid="reaction-stage"
           data-phase={phase}
           onClick={tap}
-          aria-label={
-            phase === "go" ? "Lights out, tap now" : phase === "idle" ? "Start the reaction test" : "Reaction test"
-          }
+          // No custom aria-label: the visible prompt ("Tap to start", "TAP",
+          // the result) is the accessible name, so it satisfies WCAG 2.5.3
+          // (Label in Name) for voice-input users. The lights are aria-hidden
+          // and the phase changes are announced via the aria-live status below.
           className="mt-10 flex w-full cursor-pointer flex-col items-center gap-8 rounded-sm border border-white-soft/15 bg-white-soft/[0.03] px-6 py-14 transition-colors duration-200 hover:border-green/60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green"
         >
           <div className="flex gap-3 md:gap-5" aria-hidden>
@@ -164,7 +165,7 @@ export function Reaction() {
 
         <div className="mt-8 flex items-center justify-center gap-12">
           <div className="text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-white-soft/50">Your best</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-white-soft/70">Your best</p>
             <p className="font-block mt-1 text-[clamp(1.4rem,4vw,2rem)]">
               {best === null ? "--" : `${formatSeconds(best)}s`}
             </p>

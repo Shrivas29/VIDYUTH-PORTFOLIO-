@@ -52,7 +52,9 @@ export function Header() {
       className="fixed inset-x-0 top-0 flex items-center justify-between px-5 py-4 md:px-8"
       style={{ zIndex: "var(--z-header)" }}
     >
-      <a href="#hero" aria-label="V12 — back to top" className="cursor-pointer">
+      {/* No aria-label here: the Monogram already names this "V12". A second
+          name on the link conflicts with it (WCAG 2.5.3, Label in Name). */}
+      <a href="#hero" className="cursor-pointer">
         <Monogram inverted={dark} />
       </a>
       <div ref={ref} className="relative">
