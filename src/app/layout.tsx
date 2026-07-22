@@ -37,6 +37,11 @@ export const metadata: Metadata = {
     "Nº12",
   ],
   alternates: { canonical: "/" },
+  // Google Search Console HTML-tag verification, when the token is provided.
+  // Omitted entirely if unset (e.g. when verifying via a DNS TXT record).
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
   openGraph: {
     type: "website",
